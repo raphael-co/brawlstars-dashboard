@@ -13,8 +13,6 @@ export function normTag(tag: string) {
 export async function upstream(path: string) {
   try {
     const { BRAWL_API_TOKEN } = getEnv();
-
-    console.log(BRAWL_API_TOKEN);
     
     if (!BRAWL_API_TOKEN) {
       return NextResponse.json(

@@ -114,7 +114,6 @@ async function doFetch<T = any>(path: string, init?: NextishInit, opts?: FetchOp
         msg = txt || msg;
       }
     } catch {
-      // ignore parse error
     }
 
     throw new HttpError(msg, res.status, code, body, url);
@@ -184,7 +183,7 @@ export async function getCosmetics() {
 }
 
 export async function getBrawlerAssets() {
-  const res = await fetch(`https://brawlstars-dashboard.vercel.app/api/brawlers/brawler-assets`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/brawlers/brawler-assets`, {
     cache: "force-cache",
     next: { revalidate: 60 * 60 * 24 },
   });

@@ -1,14 +1,11 @@
-// app/page.tsx
 import Link from "next/link";
 import { DACard } from "@/components/DACard";
 
 export default function Home() {
   return (
     <div className="space-y-8">
-      {/* HERO */}
       <section className="relative">
         <DACard innerClassName="p-6 sm:p-8">
-          {/* étoiles/sparkles fixes (déterministes) */}
           <svg viewBox="0 0 24 24" className="pointer-events-none absolute -left-3 -top-3 h-8 w-8 rotate-12 text-yellow-300 drop-shadow-[0_4px_0_rgba(0,0,0,0.6)]" aria-hidden>
             <path d="M12 2l2.9 5.88 6.5.95-4.7 4.58 1.1 6.44L12 17.77 6.2 19.85l1.1-6.44-4.7-4.58 6.5-.95L12 2z" fill="currentColor" stroke="black" strokeWidth="2" />
           </svg>
@@ -55,7 +52,6 @@ export default function Home() {
         </DACard>
       </section>
 
-      {/* OBJECTIFS */}
       <section className="grid lg:grid-cols-12 gap-4">
         <div className="lg:col-span-7">
           <DACard innerClassName="p-5 sm:p-6 space-y-3">
@@ -96,7 +92,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FEATURES */}
       <section className="space-y-3">
         <h2 className="text-white font-extrabold text-xl drop-shadow-[0_3px_0_rgba(0,0,0,0.8)]">
           Ce que vous trouverez ici
@@ -141,7 +136,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* DISCLAIMER */}
       <section>
         <DACard innerClassName="p-4 sm:p-5">
           <p className="text-xs sm:text-sm text-white/75 leading-relaxed">
