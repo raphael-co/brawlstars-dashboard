@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { DACard } from '@/components/DACard'
 import { KPI } from '@/components/KPI'
 
+export const dynamic = 'force-dynamic'
+
 function humanRole(role?: string) {
   switch ((role ?? '').toLowerCase()) {
     case 'president': return 'Président'
@@ -15,19 +17,19 @@ function humanRole(role?: string) {
 
 function roleChipClass(role?: string) {
   switch ((role ?? '').toLowerCase()) {
-    case 'president': return 'from-amber-300 to-yellow-500';
-    case 'vicepresident': return 'from-sky-300 to-blue-500';
-    case 'senior': return 'from-fuchsia-300 to-purple-500';
-    default: return 'from-zinc-200 to-zinc-400';
+    case 'president': return 'from-amber-300 to-yellow-500'
+    case 'vicepresident': return 'from-sky-300 to-blue-500'
+    case 'senior': return 'from-fuchsia-300 to-purple-500'
+    default: return 'from-zinc-200 to-zinc-400'
   }
 }
-function initials(name?: string) {
-  const n = String(name ?? '').trim();
-  if (!n) return '—';
-  const parts = n.split(/\s+/);
-  return (parts[0][0] ?? '') + (parts[1]?.[0] ?? '');
-}
 
+function initials(name?: string) {
+  const n = String(name ?? '').trim()
+  if (!n) return '—'
+  const parts = n.split(/\s+/)
+  return ((parts[0][0] ?? '') + (parts[1]?.[0] ?? '')).toUpperCase()
+}
 
 export default async function ClubPage({
   params,
@@ -69,35 +71,29 @@ export default async function ClubPage({
         </div>
       </DACard>
 
+      <DACard innerClassName="isolate p-4 sm:p-5 space-y-3" animated={false}>
+        <div className="text-white/90 text-sm">Membres triés par trophées (décroissant).</div>
 
-      <DACard innerClassName="p-4 sm:p-5 space-y-3">
-        <div className="text-white/90 text-sm">
-          Membres triés par trophées (décroissant).
-        </div>
-
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {sorted.map((m, i) => {
-            const tagClean = String(m.tag ?? '').replace(/^#/, '').toUpperCase();
-            const chipGrad = roleChipClass(m.role);
+            const tagClean = String(m.tag ?? '').replace(/^#/, '').toUpperCase()
+            const chipGrad = roleChipClass(m.role)
             return (
               <article
-                key={m.tag ?? i}
+                key={tagClean || i}
                 className="relative rounded-xl border-2 border-black bg-white/5 p-3 shadow-[0_4px_0_#000]"
+                role="listitem"
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={[
-                      "grid h-12 w-12 place-items-center rounded-lg border-2 border-black",
-                      "bg-gradient-to-br from-sky-300 to-fuchsia-300 text-black font-black",
-                      "shadow-[0_3px_0_#000]",
-                    ].join(' ')}
+                    className="grid h-12 w-12 place-items-center rounded-lg border-2 border-black bg-gradient-to-br from-sky-300 to-fuchsia-300 text-black font-black shadow-[0_3px_0_#000] shrink-0"
                     aria-hidden
                   >
                     {initials(m.name)}
                   </div>
 
                   <div className="min-w-0 flex-1">
-                    <div className="truncate font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">
+                    <div className="truncate font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)] break-words">
                       {m.name ?? '—'}
                     </div>
                     <div className="mt-1 inline-flex items-center gap-2">
@@ -110,7 +106,7 @@ export default async function ClubPage({
                       >
                         {humanRole(m.role)}
                       </span>
-                      <span className="text-xs text-white/70">#{tagClean || '—'}</span>
+                      <span className="text-xs text-white/70 break-all">#{tagClean || '—'}</span>
                     </div>
                   </div>
                 </div>
@@ -126,7 +122,8 @@ export default async function ClubPage({
                   {tagClean ? (
                     <Link
                       href={`/player/${tagClean}`}
-                      className="inline-flex items-center rounded-md border-2 border-black bg-gradient-to-b from-yellow-300 to-amber-400 px-2.5 py-1 text-xs font-extrabold text-black shadow-[0_3px_0_#000] hover:-translate-y-0.5 transition"
+                      prefetch={false} 
+                      className="inline-flex items-center rounded-md border-2 border-black bg-gradient-to-b from-yellow-300 to-amber-400 px-2.5 py-1 text-xs font-extrabold text-black shadow-[0_3px_0_#000] hover:-translate-y-0.5 transition min-h-[36px]"
                     >
                       Voir le profil
                     </Link>
@@ -140,7 +137,7 @@ export default async function ClubPage({
                   className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/25 to-transparent"
                 />
               </article>
-            );
+            )
           })}
 
           {!sorted.length && (
