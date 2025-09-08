@@ -10,7 +10,6 @@ export default async function ComparePage({
   const aUp = a.toUpperCase()
   const bUp = b.toUpperCase()
 
-  // ✅ Utiliser allSettled pour ne pas faire crasher la page si un joueur est introuvable (404)
   const [paRes, pbRes, brawlersRes] = await Promise.allSettled([
     getPlayer(aUp),
     getPlayer(bUp),

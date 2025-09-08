@@ -9,7 +9,7 @@ import {
   DurationHistogram,
   HourWinrateBars,
   MapWinrateBars,
-  TrophyDeltaArea, // <-- import du nouveau chart
+  TrophyDeltaArea,
 } from '@/components/Charts'
 
 type Props = {
@@ -20,7 +20,7 @@ type Props = {
   durations: number[]
   hours: Array<{ hour: number; winrate: number; total: number }>
   seqWR: Array<{ idx: number; wr: number }>
-  deltaData: Array<{ x: number; delta: number; cumul: number }> // <-- NOUVEAU
+  deltaData: Array<{ x: number; delta: number; cumul: number }> 
 }
 
 export default function BattlelogChartsClient({

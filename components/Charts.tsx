@@ -18,14 +18,13 @@ import {
   Line,
 } from "recharts";
 
-// Palette DA Brawl
-const YELLOW = "#FCD34D"; // yellow-300
-const AMBER  = "#F59E0B"; // amber-500
-const ORANGE = "#FB923C"; // orange-400
-const BLUE   = "#60A5FA"; // sky-400-ish
-const PINK   = "#F0ABFC"; // fuchsia-300-ish
-const GRID   = "rgba(255,255,255,0.12)";
-const TEXT   = "#FFFFFF";
+const YELLOW = "#FCD34D"; 
+const AMBER = "#F59E0B"; 
+const ORANGE = "#FB923C"; 
+const BLUE = "#60A5FA"; 
+const PINK = "#F0ABFC";
+const GRID = "rgba(255,255,255,0.12)";
+const TEXT = "#FFFFFF";
 
 const tooltipStyle: React.CSSProperties = {
   background: "rgba(0,0,0,0.6)",
@@ -36,7 +35,6 @@ const tooltipStyle: React.CSSProperties = {
   backdropFilter: "blur(4px)",
 };
 
-// ---- Petite étiquette descriptive (DA Brawl) ----
 function ChartDesc({ children }: { children: React.ReactNode }) {
   return (
     <p className="text-[13px] leading-relaxed text-white/85 drop-shadow-[0_2px_0_rgba(0,0,0,0.6)]">
@@ -48,7 +46,6 @@ function ChartDesc({ children }: { children: React.ReactNode }) {
   );
 }
 
-// ---- Sous-titre période ----
 function PeriodBadge({ label }: { label?: string }) {
   if (!label) return null;
   return (
@@ -57,8 +54,6 @@ function PeriodBadge({ label }: { label?: string }) {
     </div>
   );
 }
-
-// ====== Charts existants ======
 
 export function TrophiesArea({
   data,
@@ -84,7 +79,7 @@ export function TrophiesArea({
             <defs>
               <linearGradient id="gradArea" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor={YELLOW} stopOpacity={0.9} />
-                <stop offset="100%" stopColor={AMBER}  stopOpacity={0.2} />
+                <stop offset="100%" stopColor={AMBER} stopOpacity={0.2} />
               </linearGradient>
             </defs>
             <CartesianGrid stroke={GRID} strokeDasharray="3 3" />
@@ -178,6 +173,8 @@ export function ResultsPie({
   data: Array<{ name: string; value: number; key: 'victory' | 'defeat' | 'draw' }>;
   periodLabel?: string;
 }) {
+  const tooltipLabelStyle: React.CSSProperties = { color: "#fff" };
+  const tooltipItemStyle: React.CSSProperties = { color: "#fff" };
   const COLORS = { victory: YELLOW, defeat: "#EF4444", draw: PINK } as const;
   return (
     <div className="space-y-2">
@@ -193,7 +190,11 @@ export function ResultsPie({
       <div style={{ width: "100%", height: 260 }}>
         <ResponsiveContainer>
           <PieChart>
-            <Tooltip contentStyle={tooltipStyle} />
+            <Tooltip
+              contentStyle={tooltipStyle}
+              labelStyle={tooltipLabelStyle}
+              itemStyle={tooltipItemStyle}
+            />
             <Pie data={data} dataKey="value" nameKey="name" innerRadius={50} outerRadius={80} stroke="#000" strokeWidth={2}>
               {data.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[entry.key]} />
@@ -247,12 +248,12 @@ export function DurationHistogram({
   periodLabel?: string;
 }) {
   const bins = [
-    { label: "≤60s",   min: 0,   max: 60 },
-    { label: "61-90s", min: 61,  max: 90 },
-    { label: "91-120s",min: 91,  max: 120 },
-    { label: "121-150s",min: 121,max: 150 },
-    { label: "151-180s",min: 151,max: 180 },
-    { label: "180+s",  min: 181, max: Infinity },
+    { label: "≤60s", min: 0, max: 60 },
+    { label: "61-90s", min: 61, max: 90 },
+    { label: "91-120s", min: 91, max: 120 },
+    { label: "121-150s", min: 121, max: 150 },
+    { label: "151-180s", min: 151, max: 180 },
+    { label: "180+s", min: 181, max: Infinity },
   ];
   const counts = bins.map(b => ({
     bucket: b.label,
@@ -355,17 +356,15 @@ export function MapWinrateBars({
   );
 }
 
-// ====== Nouveau : carte “Variations de trophées” (delta + cumul) ======
-
 export function TrophyDeltaArea({
   sampleLabel,
   deltaData,
 }: {
-  sampleLabel: string; // ex: "(dern. 20 parties)"
+  sampleLabel: string; 
   deltaData: Array<{ x: number; delta: number; cumul: number }>;
 }) {
   return (
-    <div className="p-4 sm:p-5 rounded-2xl border border-white/15 from-zinc-800/80 to-zinc-900/80 shadow-[0_12px_40px_rgba(0,0,0,0.35)]">
+    <div className="space-y-2">
       <div className="space-y-1">
         <div className="font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">
           Variations de trophées {sampleLabel}

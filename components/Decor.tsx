@@ -1,17 +1,7 @@
-// components/Decor.tsx
 "use client";
 
 import React from "react";
 
-/**
- * Décor déterministe (seeded) sans hooks conditionnels ni early-return avant hooks.
- * Évite les mismatches d’hydratation :
- *  - pas de Math.random()
- *  - valeurs de style en chaînes ("10px", "65%", "rotate(6deg)")
- *  - ordre de hooks constant
- */
-
-// --- RNG déterministe ---
 function cyrb128(str: string) {
   let h1 = 1779033703,
     h2 = 3144134277,
@@ -44,12 +34,11 @@ function rngFromSeed(seed: string) {
   return mulberry32(h);
 }
 
-// --- Types ---
 type StarSpec = {
-  leftPct: string; // "65%"
-  topPct: string;  // "20%"
-  sizePx: string;  // "10px"
-  rotate: string;  // "rotate(6deg)"
+  leftPct: string;
+  topPct: string;  
+  sizePx: string; 
+  rotate: string; 
   color:
     | "text-yellow-300"
     | "text-amber-300"

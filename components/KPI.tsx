@@ -19,26 +19,20 @@ export function KPI({ label, value, sub }: KPIProps) {
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className="relative h-full"
     >
-      {/* Outer chunky outline (Brawl Stars vibe) */}
       <div className="relative rounded-2xl border-4 border-black shadow-[0_10px_0_#0B1225,0_12px_24px_rgba(0,0,0,0.35)]">
-        {/* Glow ring */}
         <div className="pointer-events-none absolute -inset-1 rounded-3xl bg-gradient-to-br from-yellow-300/20 via-fuchsia-300/10 to-sky-300/20 blur-md" />
 
-        {/* Inner card */}
         <div className="relative min-h-[105px] sm:min-h-[130px] overflow-hidden rounded-xl bg-gradient-to-br from-[#1B2B65] via-[#2737A5] to-[#4C2BBF] p-4 sm:p-5">
-          {/* Comic halftone + speed lines */}
           <div className="pointer-events-none absolute inset-0 opacity-25 mix-blend-overlay">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.12)_0,rgba(255,255,255,0)_60%)]" />
             <div className="absolute -right-8 -top-10 h-40 w-64 -rotate-12 bg-[repeating-linear-gradient(45deg,rgba(255,255,255,0.15)_0,rgba(255,255,255,0.15)_2px,transparent_2px,transparent_6px)]" />
           </div>
 
-          {/* Floating star badges */}
           <Star className="absolute -left-3 -top-3 h-8 w-8 rotate-12 text-yellow-300 drop-shadow-[0_4px_0_rgba(0,0,0,0.6)]" />
           <Star className="absolute right-2 -bottom-3 h-6 w-6 -rotate-6 text-amber-300 drop-shadow-[0_3px_0_rgba(0,0,0,0.6)]" />
           <Sparkle className="absolute left-7 top-2 h-3 w-3 text-sky-200" />
           <Sparkle className="absolute right-6 bottom-6 h-2.5 w-2.5 text-fuchsia-200" />
 
-          {/* Content */}
           <motion.div className="flex flex-col gap-1 text-white">
             <div className="inline-flex items-center gap-2">
               <Badge>★</Badge>
@@ -74,15 +68,12 @@ export function KPI({ label, value, sub }: KPIProps) {
             )}
           </motion.div>
 
-          {/* Bottom bevel highlight */}
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/30 to-transparent" />
         </div>
       </div>
     </motion.div>
   );
 }
-
-/* ---------- UI bits ---------- */
 
 function Badge({ children }: { children: React.ReactNode }) {
   return (

@@ -9,8 +9,5 @@ export async function GET(
 ) {
   const { id } = await context.params; 
 
-  // return NextResponse.json({ tag, encTag });
-
-  // Proxy vers l’API Brawl Stars
   return upstream(`/brawlers/${id}`);
 }

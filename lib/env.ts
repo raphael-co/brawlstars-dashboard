@@ -12,7 +12,6 @@ export const env = (() => {
     USE_BRAWLIFY: process.env.USE_BRAWLIFY,
   })
   if (!parsed.success) {
-    // On n'échoue pas au boot du serveur Next; les routes /api retourneront 500 explicite
     return { error: parsed.error.flatten().fieldErrors, BRAWL_API_TOKEN: undefined as any, USE_BRAWLIFY: process.env.USE_BRAWLIFY }
   }
   return parsed.data

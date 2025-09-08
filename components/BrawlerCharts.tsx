@@ -1,4 +1,3 @@
-// components/BrawlerCharts.tsx
 "use client";
 
 import React from "react";
@@ -28,10 +27,10 @@ type RecentDelta = {
   mode: string;
 };
 
-const YELLOW = "#FCD34D"; // yellow-300
-const AMBER = "#F59E0B";  // amber-500
-const ORANGE = "#FB923C"; // orange-400
-const BLUE = "#60A5FA";   // sky-400-ish
+const YELLOW = "#FCD34D"; 
+const AMBER = "#F59E0B";  
+const ORANGE = "#FB923C";
+const BLUE = "#60A5FA";  
 const GRID = "rgba(255,255,255,0.12)";
 const TEXT = "#FFFFFF";
 
@@ -51,15 +50,13 @@ export default function BrawlerCharts({
 }: {
   recentResults: RecentResult[];
   recentDelta: RecentDelta[];
-  /** Facultatif : texte période/échantillon (ex: "~5 h • 20 parties"). */
   periodLabel?: string;
 }) {
-  // Encode result → valeur numérique pour bar chart (victoire=1, nul=0, défaite=-1)
   const resultData = recentResults.map((r) => ({
     x: r.idx,
     res: r.result === "victory" ? 1 : r.result === "defeat" ? -1 : 0,
     mode: r.mode,
-    label: (r.result?.[0] ?? "-").toUpperCase(), // V / D / D (draw -> D)
+    label: (r.result?.[0] ?? "-").toUpperCase(),
   }));
 
   const deltaData = recentDelta.map((d) => ({
@@ -74,7 +71,6 @@ export default function BrawlerCharts({
 
   return (
     <div className="grid md:grid-cols-2 gap-4">
-      {/* Résultats récents */}
       <DACard innerClassName="p-4 sm:p-5">
         <div className="space-y-1">
           <div className="font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">
@@ -117,7 +113,6 @@ export default function BrawlerCharts({
         </div>
       </DACard>
 
-      {/* Variations de trophées */}
       <DACard innerClassName="p-4 sm:p-5">
         <div className="space-y-1">
           <div className="font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">

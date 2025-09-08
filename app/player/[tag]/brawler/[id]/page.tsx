@@ -1,4 +1,3 @@
-// app/player/[tag]/brawler/[id]/page.tsx
 import { getPlayer, getBrawlers, getBattleLog, getBrawlerAssets } from '@/lib/brawl'
 import BrawlerCharts from '@/components/BrawlerCharts'
 import { DACard } from '@/components/DACard'
@@ -43,7 +42,7 @@ type BattleItem = {
         players?: Array<{ tag: string; name: string; brawler?: { id?: number; name?: string } }>
     }
     event?: { mode?: string; map?: string }
-    battleTime?: string // ex: "20240102T123456.000Z"
+    battleTime?: string
 }
 
 function parseBattleTime(t?: string) {
@@ -52,7 +51,6 @@ function parseBattleTime(t?: string) {
     return Number.isNaN(d) ? 0 : d
 }
 
-// Garde uniquement les parties où CE compte a joué CE brawler
 function filterBrawlerBattles(items: BattleItem[], playerTagUp: string, brawlerId: number) {
     const out: BattleItem[] = []
     for (const it of items) {
@@ -68,7 +66,6 @@ function filterBrawlerBattles(items: BattleItem[], playerTagUp: string, brawlerI
     return out
 }
 
-// Stats à partir d'une liste DÉJÀ limitée aux 20 dernières du brawler
 function computePerBrawlerStats(items: BattleItem[]) {
     const total = items.length
     let wins = 0
@@ -78,7 +75,6 @@ function computePerBrawlerStats(items: BattleItem[]) {
     let streak = 0
     let current = 0
 
-    // streak sur ordre chronologique (ancien → récent)
     const chronological = [...items].sort((a, b) => parseBattleTime(a.battleTime) - parseBattleTime(b.battleTime))
     for (const it of chronological) {
         const r = it.battle?.result
@@ -108,7 +104,6 @@ function computePerBrawlerStats(items: BattleItem[]) {
 
     const streakLabel = streak === 0 ? '—' : (streak > 0 ? `W${streak}` : `L${Math.abs(streak)}`)
 
-    // Données graphiques (sur ce même sous-ensemble)
     const recentSorted = [...items].sort((a, b) => parseBattleTime(a.battleTime) - parseBattleTime(b.battleTime))
     let cumul = 0
     const recentResults = recentSorted.map((it, i) => ({
@@ -150,10 +145,9 @@ export default async function PlayerBrawlerPage({
         getPlayer(tagUp),
         getBrawlers(),
         getBattleLog(tagUp),
-        getBrawlerAssets(), // <- récupère imageUrl / imageUrl2 (Brawlify)
+        getBrawlerAssets(), 
     ])
 
-    // Map id -> url d'image (on préfère imageUrl2 si dispo)
     const assetMap = new Map<number, string>(
         (assets?.items ?? [])
             .filter((x: any) => Number.isFinite(x?.id))
@@ -173,7 +167,7 @@ export default async function PlayerBrawlerPage({
     const ownedSP = diffById(pb?.starPowers as any, master.starPowers as any)
     const ownedG = diffById(pb?.gadgets as any, master.gadgets as any)
     const ownedGears = pb?.gears ?? []
-    const gearsInfo = { owned: ownedGears.length, total: Math.max(ownedGears.length, 2) } // estimation
+    const gearsInfo = { owned: ownedGears.length, total: Math.max(ownedGears.length, 2) }
 
     const stats = {
         power: pb?.power ?? 0,
@@ -188,7 +182,6 @@ export default async function PlayerBrawlerPage({
         gearsTotal: gearsInfo.total,
     }
 
-    // 20 DERNIÈRES parties AVEC CE brawler
     const filtered = filterBrawlerBattles((battlelog.items ?? []) as BattleItem[], tagUp, brawlerId)
     const last20 = filtered
         .sort((a, b) => parseBattleTime(b.battleTime) - parseBattleTime(a.battleTime))
@@ -199,11 +192,9 @@ export default async function PlayerBrawlerPage({
 
     return (
         <div className="space-y-8">
-            {/* En-tête avec ICON DU BRAWLER */}
             <section className="relative gap-4 w-full">
                 <DACard>
                     <div className="flex items-center gap-4 text-white justify-between">
-                        {/* Icône / vignette du brawler */}
                         <div className="shrink-0">
                             {imgFor(master.id) ? (
                                 // eslint-disable-next-line @next/next/no-img-element
@@ -249,7 +240,6 @@ export default async function PlayerBrawlerPage({
                 </DACard>
             </section>
 
-            {/* Blocs complétion SP/Gadgets/Gears */}
             <section className="grid md:grid-cols-3 gap-4">
                 <DACard innerClassName="space-y-2">
                     <div className="flex items-center justify-between text-white">

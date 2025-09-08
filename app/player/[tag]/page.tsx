@@ -1,4 +1,3 @@
-// app/player/[tag]/page.tsx
 import { getPlayer, getBrawlers, getCosmetics, getBrawlerAssets } from '@/lib/brawl'
 import { computeCompletion } from '@/lib/completion'
 import { KPI } from '@/components/KPI'
@@ -57,7 +56,6 @@ export default async function PlayerPage({
     )
   }
 
-  // Map id -> image (on préfère imageUrl2 quand dispo, sinon imageUrl)
   const assetMap = new Map<number, string>(
     (assets?.items ?? [])
       .filter((x) => Number.isFinite(x?.id))
@@ -68,7 +66,6 @@ export default async function PlayerPage({
     return u && u.startsWith('http') ? u : undefined
   }
 
-  // Non possédés
   const all: any[] = brawlersData?.items ?? []
   const ownedIds = new Set<number>((player?.brawlers ?? []).map((b: any) => Number(b.id)))
   const missing = all
@@ -82,7 +79,6 @@ export default async function PlayerPage({
           <section className="relative gap-4 items-center w-full">
             <div className="relative md:col-span-2">
               <DACard>
-                {/* décor… */}
                 <div className="space-y-2 text-white">
                   <h1 className="text-2xl sm:text-3xl font-extrabold drop-shadow-[0_3px_0_rgba(0,0,0,0.8)]">
                     {player.name}{' '}
@@ -109,7 +105,7 @@ export default async function PlayerPage({
                     <Link className="underline decoration-2 underline-offset-2" href={`/battlelog/${tagUp}`}>
                       Battlelog
                     </Link>
-                    <CompareButton currentTag={tagUp} defaultOpponentTag="8PQL0J2" className="underline decoration-2 underline-offset-2 cursor-pointer" />
+                    <CompareButton currentTag={tagUp} defaultOpponentTag="GGUQJ28Q" className="underline decoration-2 underline-offset-2 cursor-pointer" />
                   </div>
                 </div>
               </DACard>
@@ -128,7 +124,6 @@ export default async function PlayerPage({
 
           <AccountCompletion comp={comp} />
 
-          {/* ======= VOS BRAWLERS (possédés) ======= */}
           <section className="space-y-3">
             <h2 className="text-white font-extrabold text-lg drop-shadow-[0_3px_0_rgba(0,0,0,0.8)]">
               Vos Brawlers
@@ -141,10 +136,8 @@ export default async function PlayerPage({
                   <DACard key={pb.id} delay={i * 0.05}>
                     <Link href={`/player/${tagUp}/brawler/${pb.id}`}>
                       <div className="flex items-start gap-3">
-                        {/* IMAGE */}
                         <div className="shrink-0">
                           {imgFor(pb.id) ? (
-                            // eslint-disable-next-line @next/next/no-img-element
                             <img
                               alt={pb.name}
                               src={imgFor(pb.id)!}
@@ -176,7 +169,6 @@ export default async function PlayerPage({
             </div>
           </section>
 
-          {/* ======= BRAWLERS NON POSSÉDÉS ======= */}
           <section className="space-y-3">
             <h2 className="text-white font-extrabold text-lg drop-shadow-[0_3px_0_rgba(0,0,0,0.8)]">
               Brawlers non possédés ({missing.length})
@@ -189,10 +181,8 @@ export default async function PlayerPage({
                 <DACard key={b.id} delay={i * 0.03}>
                   <Link href={`/player/${tagUp}/brawler/${b.id}`}>
                     <div className="flex items-start gap-3">
-                      {/* IMAGE */}
                       <div className="shrink-0">
                         {imgFor(b.id) ? (
-                          // eslint-disable-next-line @next/next/no-img-element
                           <img
                             alt={b.name}
                             src={imgFor(b.id)!}
@@ -225,18 +215,6 @@ export default async function PlayerPage({
                 </DACard>
               ))}
             </div>
-          </section>
-
-          {/* ======= SKINS ======= */}
-          <section className="space-y-3">
-            <h2 className="text-white font-extrabold text-lg drop-shadow-[0_3px_0_rgba(0,0,0,0.8)]">
-              Cosmétiques (Skins)
-            </h2>
-            <p className="text-sm text-white/80 drop-shadow-[0_2px_0_rgba(0,0,0,0.6)]">
-              L&apos;API officielle ne donne pas les skins possédés par un joueur. Voici la liste des skins possibles
-              (source Brawlify). Vous pouvez marquer vos skins en local.
-            </p>
-            <SkinsList cosmetics={cosmetics} />
           </section>
         </>
       ) : (

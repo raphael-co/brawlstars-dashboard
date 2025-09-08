@@ -22,8 +22,6 @@ export async function GET(
     kind === "brawlers" && brawlerId
       ? `/brawlers/${encodeURIComponent(brawlerId)}`
       : "";
-
-  // Ex: /rankings/fr/brawlers/16000000  OR  /rankings/fr/players
   return upstream(
     `/rankings/${encodeURIComponent(country)}/${encodeURIComponent(kind)}${suffix}`
   );
