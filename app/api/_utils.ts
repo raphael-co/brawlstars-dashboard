@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { env } from "@/lib/env";
 
-const API_BASE = "https://api.brawlstars.com/v1";
+const API_BASE = "https://bsproxy.royaleapi.dev/v1";
 
 export function normTag(tag: string) {
   return `%23${String(tag).replace(/^%23/, "").replace(/^#/, "").toUpperCase()}`;
