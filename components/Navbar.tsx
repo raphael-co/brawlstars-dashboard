@@ -24,7 +24,7 @@ export function Navbar() {
           <div className="pointer-events-none absolute -inset-1 rounded-2xl bg-gradient-to-br from-yellow-300/15 via-fuchsia-300/10 to-sky-300/15 blur-md" />
           <div className="pointer-events-none absolute inset-0 opacity-20 mix-blend-overlay bg-[repeating-linear-gradient(45deg,rgba(255,255,255,0.18)_0,rgba(255,255,255,0.18)_2px,transparent_2px,transparent_8px)]" />
 
-          <div className="relative z-10 flex min-h-[105px] sm:min-h-[130px] items-center justify-between gap-3 px-4 sm:px-6">
+          <div className="relative z-10 flex min-h-[105px] sm:min-h-[130px] flex-col sm:flex-row items-center justify-between gap-3 px-4 sm:px-6">
             <div className="flex items-center gap-2">
               <span className="grid h-8 w-8 place-items-center rounded-md border-2 border-black bg-gradient-to-b from-yellow-300 to-amber-400 text-sm font-extrabold text-black shadow-[0_3px_0_#000]">
                 ★
@@ -37,7 +37,8 @@ export function Navbar() {
               </Link>
             </div>
 
-            <form onSubmit={submit} className="flex-1 max-w-xl hidden md:flex items-center gap-2">
+            {/* Formulaire modifié */}
+            <form onSubmit={submit} className="flex-1 max-w-xl flex flex-col sm:flex-row items-center gap-2 sm:gap-3 w-full sm:mb-3">
               <label className="sr-only" htmlFor="tag">
                 Tag
               </label>
@@ -59,7 +60,6 @@ export function Navbar() {
                 Voir
               </button>
             </form>
-
           </div>
 
           <div className="pointer-events-none absolute left-3 top-2 h-3 w-3 rounded-full bg-white/80 opacity-70" />
