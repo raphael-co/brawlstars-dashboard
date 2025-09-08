@@ -1,4 +1,4 @@
-import { getPlayer, getBrawlers, getCosmetics, getBrawlerAssets } from '@/lib/brawl'
+import { getPlayer, getBrawlers, getCosmetics, getBrawlerAssets, isHttpError, HttpError } from '@/lib/brawl'
 import { computeCompletion } from '@/lib/completion'
 import { KPI } from '@/components/KPI'
 import OwnedToggle from '@/components/OwnedToggle'
@@ -47,11 +47,37 @@ export default async function PlayerPage({
     assets = a ?? { items: [] }
     const brawlers = brawlersData?.items ?? []
     comp = computeCompletion(player, brawlers)
-  } catch {
+  } catch (e) {
+    const err = e as unknown
+    const renderDetails = (he: HttpError) => (
+      <details className="mt-2 rounded-lg border border-white/20 bg-white/5 p-3 text-xs text-white/90">
+        <summary className="cursor-pointer">Détails de l’erreur</summary>
+        <div className="mt-2 space-y-1">
+          <div><b>Status:</b> {he.status}</div>
+          {he.code !== undefined && <div><b>Code:</b> {String(he.code)}</div>}
+          <div><b>Message:</b> {he.message}</div>
+          {he.url && <div><b>URL:</b> {he.url}</div>}
+          {he.body && (
+            <pre className="mt-2 max-h-64 overflow-auto rounded bg-black/50 p-2">
+{JSON.stringify(he.body, null, 2)}
+            </pre>
+          )}
+        </div>
+      </details>
+    )
+
     return (
       <div className="space-y-4">
         <h1>Joueur #{tagUp}</h1>
-        <div className="text-sm opacity-70">Impossible de charger les données pour le moment.</div>
+        <div className="text-sm opacity-70">Impossible de charger les données.</div>
+        {isHttpError(err) ? (
+          renderDetails(err)
+        ) : (
+          <details className="mt-2 rounded-lg border border-white/20 bg-white/5 p-3 text-xs text-white/90">
+            <summary className="cursor-pointer">Détails</summary>
+            <pre className="mt-2">{String(err)}</pre>
+          </details>
+        )}
       </div>
     )
   }
@@ -203,7 +229,7 @@ export default async function PlayerPage({
                             Non possédé
                           </div>
                         </div>
-                        <div className="text-sm text-white/90">
+                        <div className="text-sm text白/90">
                           <b className="font-extrabold">SP:</b> {b.starPowers?.map((s: any) => s.name).join(', ') || '—'}
                         </div>
                         <div className="text-sm text-white/90">

@@ -58,7 +58,6 @@ type SparkSpec = {
     | "text-sky-300";
 };
 
-// --- Builders ---
 function buildStars(
   seed: string,
   count: number,
@@ -120,7 +119,6 @@ function buildSparkles(
   });
 }
 
-// --- Composant ---
 export function DecorLayer({
   seed = "default",
   stars = 6,
@@ -130,7 +128,6 @@ export function DecorLayer({
   stars?: number;
   sparkles?: number;
 }) {
-  // Hooks *toujours* appelés, aucun early-return avant.
   const specs = React.useMemo(
     () => ({
       stars: buildStars(seed, stars),
