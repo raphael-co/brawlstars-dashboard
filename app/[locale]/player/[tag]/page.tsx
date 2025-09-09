@@ -12,7 +12,7 @@ import { Lnk } from "@/components/Lnk";
 export default async function PlayerPage({
   params,
 }: {
-  params: { tag: string };
+  params: Promise<{ tag: string }>;
 }) {
   const { tag } = await params;
   const tagUp = String(tag ?? "").toUpperCase();
@@ -22,21 +22,21 @@ export default async function PlayerPage({
   let cosmetics: any[] | null = null;
   let assets:
     | {
-      items: Array<{ id: number; name: string; imageUrl?: string | null; imageUrl2?: string | null }>;
-    }
+        items: Array<{ id: number; name: string; imageUrl?: string | null; imageUrl2?: string | null }>;
+      }
     | null = null;
   let comp:
     | {
-      ownedBrawlers: number;
-      totalBrawlers: number;
-      brawlersCompletion: number;
-      starPowersOwned: number;
-      starPowersTotal: number;
-      gadgetsOwned: number;
-      gadgetsTotal: number;
-      gearsOwned: number;
-      gearsTotal: number;
-    }
+        ownedBrawlers: number;
+        totalBrawlers: number;
+        brawlersCompletion: number;
+        starPowersOwned: number;
+        starPowersTotal: number;
+        gadgetsOwned: number;
+        gadgetsTotal: number;
+        gearsOwned: number;
+        gearsTotal: number;
+      }
     | null = null;
 
   try {
