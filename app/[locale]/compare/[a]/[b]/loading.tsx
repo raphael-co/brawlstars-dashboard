@@ -1,34 +1,54 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
+import { useI18n } from "@/components/T";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 
+function hashSeed(input: string): number {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < input.length; i++) {
+    h ^= input.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return h >>> 0;
+}
+
 export default function Loading() {
   const pathname = usePathname();
+  const { t } = useI18n();
 
   const tagUp = useMemo(() => {
-    const m = /\/player\/([^\/?#]+)/.exec(pathname ?? "");
-    if (!m) return "—";
-    const raw = decodeURIComponent(m[1]);
-    return raw.replace(/^%23|^#/, "").toUpperCase();
+    const path = typeof pathname === "string" ? pathname : "";
+    const m = /\/player\/([^\/?#]+)/.exec(path);
+    if (!m || !m[1]) return "—";
+    let raw = m[1];
+    try {
+      raw = decodeURIComponent(raw);
+    } catch { }
+    const cleaned = String(raw).replace(/^%23|^#/, "").trim();
+    return cleaned ? cleaned.toUpperCase() : "—";
   }, [pathname]);
 
   const [pct, setPct] = useState(12);
   useEffect(() => {
-    const t = setInterval(() => {
+    const tmr = setInterval(() => {
       setPct((p) => (p >= 96 ? 96 : p + Math.max(1, Math.round((100 - p) * 0.06))));
     }, 120);
-    return () => clearInterval(t);
+    return () => clearInterval(tmr);
   }, []);
 
-  const tips = [
-    "Préparation de l’arène…",
-    "Échauffement des brawlers…",
-    "Calcul des séries en cours…",
-    "Astiquage des trophées ✨…",
-  ];
-  const tip = tips[Math.floor(Date.now() / 1400) % tips.length];
+  const tipKeys = [
+    "loading.preparingArena",
+    "loading.warmingBrawlers",
+    "loading.computingStreaks",
+    "loading.polishingTrophies",
+  ] as const;
+
+  const tipKey = useMemo(() => {
+    const seed = hashSeed(`player-loading:${tagUp}`);
+    return tipKeys[seed % tipKeys.length];
+  }, [tagUp]);
 
   return (
     <div className="relative mx-auto flex min-h-[70vh] w-full max-w-5xl items-center justify-center p-6">
@@ -54,7 +74,7 @@ export default function Loading() {
             <span className="rounded-md border-2 border-black bg-gradient-to-b from-yellow-300 to-amber-400 px-2 py-0.5 text-[11px] font-black text-black shadow-[0_3px_0_#000]">
               BETA
             </span>
-            <span className="text-white/85 text-xs sm:text-sm">Chargement du profil…</span>
+            <span className="text-white/85 text-xs sm:text-sm">{t("common.loadingProfile")}</span>
           </div>
         </div>
 
@@ -67,13 +87,13 @@ export default function Loading() {
           >
             <BadgeAvatar kind="left" label={`#${tagUp}`} />
             <div className="text-white text-sm sm:text-base font-extrabold drop-shadow-[0_3px_0_rgba(0,0,0,0.8)]">
-              Joueur
+              {t("loading.playerLabel")}
             </div>
           </motion.div>
 
           <div className="col-span-1 flex flex-col items-center">
             <VsBurst />
-            <div className="mt-2 text-xs text-white/80">{tip}</div>
+            <div className="mt-2 text-xs text-white/80">{t(tipKey)}</div>
           </div>
 
           <motion.div
@@ -82,16 +102,18 @@ export default function Loading() {
             transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.05 }}
             className="col-span-1 flex flex-col items-center gap-3"
           >
-            <BadgeAvatar kind="right" label="Serveur" altTheme />
+            <BadgeAvatar kind="right" label={t("loading.serverLabel")} altTheme />
             <div className="text-white text-sm sm:text-base font-extrabold drop-shadow-[0_3px_0_rgba(0,0,0,0.8)]">
-              Données Brawl
+              {t("loading.brawlDataLabel")}
             </div>
           </motion.div>
         </div>
 
         <div className="px-6 pb-6 sm:px-8 sm:pb-8">
           <ProgressGold value={pct} />
-          <div className="mt-1 text-right text-xs text-white/70">{pct}% • synchronisation…</div>
+          <div className="mt-1 text-right text-xs text-white/70">
+            {pct}% • {t("loading.syncing")}
+          </div>
         </div>
 
         <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/40 to-transparent" />
@@ -132,13 +154,24 @@ function ArenaStreak() {
         <div className="absolute inset-0 bg-[repeating-linear-gradient(90deg,rgba(255,255,255,0.12)_0,rgba(255,255,255,0.12)_2px,transparent_2px,transparent_18px)]" />
       </div>
       <div className="absolute inset-0 opacity-10 overflow-hidden">
-        <div className="absolute inset-0 h-full w-[2px] bg-white/30 blur-[1px]" style={{ animation: "scan 2.6s linear infinite" }} />
+        <div
+          className="absolute inset-0 h-full w-[2px] bg-white/30 blur-[1px]"
+          style={{ animation: "scan 2.6s linear infinite" }}
+        />
       </div>
     </div>
   );
 }
 
-function BadgeAvatar({ kind, label, altTheme = false }: { kind: "left" | "right"; label: string; altTheme?: boolean }) {
+function BadgeAvatar({
+  kind,
+  label,
+  altTheme = false,
+}: {
+  kind: "left" | "right";
+  label: string;
+  altTheme?: boolean;
+}) {
   const base = altTheme
     ? "from-sky-300 to-blue-500 shadow-[0_0_16px_rgba(56,189,248,0.5)]"
     : "from-yellow-300 to-amber-500 shadow-[0_0_16px_rgba(251,191,36,0.55)]";
@@ -147,7 +180,8 @@ function BadgeAvatar({ kind, label, altTheme = false }: { kind: "left" | "right"
       <div
         className={[
           "relative h-20 w-20 sm:h-24 sm:w-24 rounded-full border-4 border-black",
-          "bg-gradient-to-b", base,
+          "bg-gradient-to-b",
+          base,
         ].join(" ")}
         style={{ boxShadow: "0 6px 0 #000" }}
       />

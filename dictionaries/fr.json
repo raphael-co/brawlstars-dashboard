@@ -1,0 +1,327 @@
+{
+  "common": {
+    "beta": "BETA",
+    "loadingProfile": "Chargement du profil…",
+    "period": "Période",
+    "seeProfile": "Voir le profil",
+    "compare": "Comparer",
+    "cancel": "Annuler",
+    "nonOwned": "Non possédé",
+    "star": "Brawl Star",
+    "example": "Exemple",
+    "open": "Ouvrir",
+    "unavailable": "Indisponible",
+    "eg": "ex. :",
+    "ownedPlural": "Possédé(s)",
+    "missingPlural": "Manquant(s)"
+  },
+  "nav": {
+    "tagLabel": "Tag",
+    "searchPlaceholder": "Entrez votre tag (ex. : #GGUQJ28Q)",
+    "home": "Accueil",
+    "rankings": "Classements",
+    "go": "Aller",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu"
+  },
+  "home": {
+    "betaNote": "L’app évolue encore — vos retours sont les bienvenus ✨",
+    "titleSuffix": "Tableau de bord",
+    "intro": {
+      "beforeTag": "Entrez votre",
+      "afterTag": "dans la barre du haut pour explorer vos stats : trophées, brawlers, star powers, gadgets, progression de complétion, battlelog, club, et plus."
+    },
+    "tag": "tag",
+    "examples": "Exemples :",
+    "battlelogAndAnalytics": "Battlelog & analyses",
+    "goals": {
+      "title": "Objectifs de l’app",
+      "item1": "Offrir une vue claire et lisible de votre progression.",
+      "item2": "Analyser les matchs récents avec des graphiques (winrate, durée, heures, cartes).",
+      "item3": "Suivre la complétion : brawlers, star powers, gadgets, gears, skins.",
+      "item4": "Centraliser club, comparaisons et classements (bientôt).",
+      "betaNote": "Ceci est une BETA : certaines pages/sources de données peuvent changer."
+    },
+    "how": {
+      "title": "Comment démarrer ?",
+      "step1": "Récupérez votre tag en jeu (ex. : #8PQL0J2).",
+      "step2": "Collez-le dans la barre du haut puis validez.",
+      "step3": "Explorez les pages Profil, Battlelog, Brawlers, Club…",
+      "exampleCta": "Voir un profil d’exemple"
+    },
+    "find": {
+      "title": "Ce que vous trouverez ici",
+      "profileDesc": "KPIs, niveaux, trophées, historique, club et complétion en un coup d’œil.",
+      "battlelogDesc": "Winrate global et par mode/carte, durées, heures de pointe, tendances.",
+      "viewCharts": "Voir les graphiques",
+      "brawlerFocusTitle": "Focus Brawler",
+      "brawlerFocusDesc": "Stats par brawler, séries, deltas de trophées, modes favoris.",
+      "brawlerFocusNote": "Depuis la page Profil → liste des brawlers",
+      "skinsTitle": "Skins & cosmétiques",
+      "skinsDesc": "Liste complète (Brawlify) avec marquage local des skins possédés.",
+      "skinsNote": "Données non officielles, à titre indicatif",
+      "clubsTitle": "Clubs",
+      "clubsDesc": "Infos du club, membres, rôles et trophées requis.",
+      "clubsNote": "Accès via Profil → Club",
+      "rankingsSoonTitle": "Classements (bientôt)",
+      "rankingsSoonDesc": "Tops locaux et globaux par pays/catégorie.",
+      "rankingsSoonNote": "En construction"
+    },
+    "disclaimer": "Projet non officiel. Données issues de l’API Supercell et de Brawlify quand indiqué. Cette BETA peut contenir des imprécisions ou des changements structurels. Merci pour vos retours !"
+  },
+  "errors": {
+    "loadingFailed": "Impossible de charger les données.",
+    "details": "Détails",
+    "errorDetails": "Détails de l’erreur",
+    "status": "Statut",
+    "code": "Code",
+    "message": "Message",
+    "url": "URL"
+  },
+  "player": {
+    "title": "Profil",
+    "level": "Niveau",
+    "trophies": "Trophées",
+    "highest": "record",
+    "club": "Club",
+    "yourBrawlers": "Vos brawlers",
+    "missingBrawlers": "Brawlers manquants",
+    "skins": "Cosmétiques (skins)",
+    "kpi": {
+      "trophies": "Trophées",
+      "trophiesSub": "Total actuel",
+      "victories3v3": "Victoires 3v3",
+      "soloDuo": "Solo/Duo"
+    },
+    "missingNote": "Inclut tous les brawlers de la base, même ceux pas encore sortis."
+  },
+  "brawler": {
+    "trophies": "Trophées",
+    "rank": "Rang",
+    "power": "Puissance",
+    "starPowers": "Star Powers",
+    "gadgets": "Gadgets",
+    "gears": "Gears",
+    "notOwned": "Ce brawler n’est pas encore possédé sur ce compte.",
+    "unknown": "Brawler inconnu",
+    "gearsEquipped": "Gears (équipés)",
+    "noGearsOwned": "Aucun gear possédé",
+    "resultsPrefix": "Résultats sur les",
+    "resultsSuffix": "dernières parties avec",
+    "recentPerformance": "Performances récentes",
+    "last": "dern.",
+    "winrate": "Winrate",
+    "draws": "Égalités",
+    "trophyDeltaTotal": "Δ Trophées total",
+    "avgPerGame": "Moyenne / partie",
+    "streak": "Série",
+    "winrateByMode": "Winrate par mode",
+    "quickRecap": "Récap rapide",
+    "wins": "Victoires",
+    "bestModeSample": "Meilleur mode (échantillon)",
+    "recentResults": "Résultats récents"
+  },
+  "battlelog": {
+    "title": "Battlelog",
+    "globalWinrate": "Winrate global",
+    "recentDetails": "Détails récents",
+    "mode": "Mode",
+    "map": "Carte",
+    "result": "Résultat",
+    "duration": "Durée",
+    "victory": "Victoire",
+    "defeat": "Défaite",
+    "draw": "Nul",
+    "vs": "VS"
+  },
+  "compare": {
+    "metrics": "Métrique",
+    "delta_sign": "Δ",
+    "players": "Joueurs",
+    "title": "Comparatif",
+    "loadBothFail": "Impossible de charger les deux joueurs.",
+    "playerNotFound": "Joueur introuvable",
+    "showingAvailable": "Affichage du joueur disponible.",
+    "completion": "Complétion",
+    "gearsEst": "Gears (est.)",
+    "ownedBrawlers": "Brawlers possédés",
+    "accountCompletion": "Complétion du compte",
+    "headToHead": "Résumé head-to-head",
+    "powerRank": "Puissance & rang",
+    "milestones": "Paliers importants",
+    "delta": "Delta",
+    "leader": "Leader",
+    "miniSummary": "Petit bilan du comparatif",
+    "basedOn": "Basé sur",
+    "indicators": "indicateurs",
+    "ties": "égalités",
+    "globalScore": "Score global",
+    "gaugeHint": "La jauge reflète la part d’indicateurs en faveur du joueur en tête (hors égalités).",
+    "verdict": {
+      "drawTitle": "Match nul",
+      "drawLine": "Égalité parfaite :",
+      "edgePrefix": "Avantage",
+      "tight": "C’était serré :",
+      "hatPrefix": "Coup de chapeau à",
+      "leads": "mène",
+      "mvpPrefix": "MVP du jour :",
+      "shines": "s’illustre"
+    },
+    "labels": {
+      "trophies": "Trophées",
+      "highest": "Record",
+      "level": "Niveau",
+      "avgPower": "Puissance moyenne",
+      "maxPower": "Puissance max",
+      "avgRank": "Rang moyen",
+      "maxRank": "Rang max",
+      "power11": "Pouvoir 11",
+      "power10plus": "Pouvoir 10+",
+      "power9plus": "Pouvoir 9+",
+      "rank30plus": "Rang 30+",
+      "rank25plus": "Rang 25+",
+      "rank20plus": "Rang 20+",
+      "at500": "≥500 trophées",
+      "at600": "≥600 trophées",
+      "at750": "≥750 trophées",
+      "at1k": "≥1000 trophées",
+      "avgTrophiesPerBrawler": "Trophées moyens / brawler",
+      "p50PerBrawler": "Médiane (p50) / brawler",
+      "p75PerBrawler": "p75 / brawler",
+      "p90PerBrawler": "p90 / brawler",
+      "totalGearsEquipped": "Total gears portés",
+      "victories3v3": "Victoires 3v3"
+    },
+    "dialog": {
+      "title": "Comparer avec un autre tag",
+      "helpPrefix": "Saisis un tag Brawl Stars (ex. : ",
+      "helpSuffix": "). Si tu laisses vide, on utilisera "
+    }
+  },
+  "loading": {
+    "polishTrophies": "Polissage des trophées (shiny ✨)…",
+    "collecting": "Récupération du profil depuis l’arène…",
+    "gearing": "Rassemblement des brawlers & gears…",
+    "wr": "Calcul des winrates récents…",
+    "data": "Chargement des données…",
+    "preparingArena": "Préparation de l’arène…",
+    "warmingBrawlers": "Échauffement des brawlers…",
+    "computingStreaks": "Calcul des séries en cours…",
+    "polishingTrophies": "Astiquage des trophées ✨…",
+    "playerLabel": "Joueur",
+    "serverLabel": "Serveur",
+    "brawlDataLabel": "Données Brawl",
+    "syncing": "synchronisation…"
+  },
+  "charts": {
+    "tip": "ASTUCE",
+    "lastShort": "dern.",
+    "matchesLower": "parties",
+    "trophiesProgress": {
+      "title": "Progression des trophées",
+      "help": "Évolution de vos trophées au fil du temps. La zone remplie met en avant la dynamique récente."
+    },
+    "winrateByMode": {
+      "title": "Winrate par mode",
+      "help": "Part de victoires par mode sur la période. 100% = toutes les parties gagnées sur ce mode."
+    },
+    "modeVolume": {
+      "title": "Nombre de parties par mode",
+      "help": "Répartition des parties jouées par mode. Utile pour contextualiser les winrates (taille d’échantillon)."
+    },
+    "resultsPie": {
+      "title": "Répartition des résultats",
+      "help": "Vue d’ensemble des victoires, défaites et nuls sur la période sélectionnée."
+    },
+    "rollingWinrate": {
+      "title": "Winrate cumulé par partie",
+      "help": "Tendance de performance : après chaque match, la courbe montre votre pourcentage total de victoires jusqu’à cet instant."
+    },
+    "duration": {
+      "title": "Durée des parties",
+      "help": "Distribution des durées (en secondes). Permet d’identifier des modes ou cartes plus longs/courts."
+    },
+    "hourWinrate": {
+      "title": "Winrate par heure (UTC)",
+      "help": "Winrate moyen selon l’heure (UTC). Pratique pour viser des plages horaires favorables."
+    },
+    "mapWinrate": {
+      "title": "Meilleures cartes (par winrate)",
+      "help": "Classement des cartes selon votre pourcentage de victoire. À utiliser pour cibler vos points forts/faibles."
+    },
+    "winrateLabel": "Winrate",
+    "hour": "Heure",
+    "trophiesDelta": {
+      "title": "Variations de trophées",
+      "help": "Courbe 1 : Δ trophées par partie • Courbe 2 : cumul des Δ."
+    },
+    "deltaLabel": "Δ trophées",
+    "cumulLabel": "Δ cumulée",
+    "game": "Partie",
+    "lastWithThisBrawler": "dernières avec ce brawler"
+  },
+  "club": {
+    "loading": "Chargement du club…",
+    "syncing": "synchronisation…",
+    "members": "Membres",
+    "badge": "CLUB",
+    "maxCap": "Cap max 30",
+    "tips": {
+      "0": "Ouverture des portes du club…",
+      "1": "Mise au point des bannières…",
+      "2": "Rassemblement des membres…",
+      "3": "Polissage de l’emblème ✨…"
+    },
+    "type": {
+      "label": "Type",
+      "sub": "Admission",
+      "open": "Ouvert",
+      "inviteonly": "Sur invitation",
+      "invite_only": "Sur invitation",
+      "closed": "Fermé",
+      "unknown": "—"
+    },
+    "requiredTrophies": "Trophées requis",
+    "hierarchy": "Hiérarchie",
+    "hierarchySub": "Prés/VP/Aînés",
+    "membersSortedDesc": "Membres triés par trophées (décroissant).",
+    "profileUnavailable": "Profil indisponible",
+    "noMembers": "Aucun membre.",
+    "role": {
+      "president": "Président",
+      "vicepresident": "Vice-président",
+      "senior": "Aîné",
+      "member": "Membre"
+    }
+  },
+  "rankings": {
+    "title": "Classements",
+    "topPlayers": "Top joueurs",
+    "topClubs": "Top clubs",
+    "topPlayersForBrawlerPrefix": "Top joueurs —",
+    "entries": "entrées",
+    "view": "Voir la fiche",
+    "noResults": "Aucun résultat pour ce filtre.",
+    "controls": {
+      "country": "Pays",
+      "category": "Catégorie",
+      "brawler": "Brawler",
+      "updating": "Mise à jour…"
+    },
+    "labels": {
+      "trophies": "Trophées",
+      "points": "Points"
+    },
+    "kinds": {
+      "players": "Joueurs",
+      "clubs": "Clubs",
+      "brawlers": "Brawlers"
+    },
+    "tips": {
+      "0": "Récupération du leaderboard…",
+      "1": "Mise en orbite des médailles…",
+      "2": "Ajustement des paillettes ✨…",
+      "3": "Préparation des fiches joueurs…"
+    }
+  }
+}

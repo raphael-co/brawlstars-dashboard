@@ -3,19 +3,24 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
+import { useI18n } from "@/components/T";
 
 export default function Loading() {
+  const { t } = useI18n();
   const sp = useSearchParams();
   const country = (sp?.get("country") ?? "global").toLowerCase();
   const kind = (sp?.get("kind") ?? "players") as "players" | "clubs" | "brawlers";
   const brawlerId = sp?.get("brawlerId") ?? "";
 
-  const tips = [
-    "Récupération du leaderboard…",
-    "Mise en orbite des médailles…",
-    "Ajustement des paillettes ✨…",
-    "Préparation des fiches joueurs…",
-  ];
+  const tips = useMemo(
+    () => [
+      t("rankings.tips.0"),
+      t("rankings.tips.1"),
+      t("rankings.tips.2"),
+      t("rankings.tips.3"),
+    ],
+    [t]
+  );
   const tip = tips[Math.floor(Date.now() / 1400) % tips.length];
 
   const stars = useMemo(() => {
@@ -33,10 +38,10 @@ export default function Loading() {
 
   const [pct, setPct] = useState(8);
   useEffect(() => {
-    const t = setInterval(() => {
+    const tmr = setInterval(() => {
       setPct((p) => (p >= 96 ? 96 : p + Math.max(1, Math.round((100 - p) * 0.06))));
     }, 120);
-    return () => clearInterval(t);
+    return () => clearInterval(tmr);
   }, []);
 
   return (
@@ -75,17 +80,17 @@ export default function Loading() {
 
           <div className="flex flex-wrap items-center gap-3">
             <span className="rounded-md border-2 border-black bg-gradient-to-b from-yellow-300 to-amber-400 px-2 py-0.5 text-[11px] font-black text-black shadow-[0_3px_0_#000]">
-              BETA
+              {t("common.beta")}
             </span>
             <span className="text-white/85 text-xs sm:text-sm">{tip}</span>
           </div>
 
           <div className="mt-3 flex flex-wrap items-center gap-3">
             <h1 className="text-2xl sm:text-3xl font-extrabold text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.8)]">
-              Classements
+              {t("rankings.title")}
             </h1>
             <Pill>{flagEmoji(country)} {country.toUpperCase()}</Pill>
-            <Pill>{kindLabel(kind)}</Pill>
+            <Pill>{t(`rankings.kinds.${kind}`)}</Pill>
             {kind === "brawlers" && <Pill glow>#{brawlerId}</Pill>}
           </div>
 
@@ -102,7 +107,9 @@ export default function Loading() {
 
           <div className="mt-5">
             <ProgressGold value={pct} />
-            <div className="mt-1 text-right text-xs text-white/70">{pct}% • synchronisation…</div>
+            <div className="mt-1 text-right text-xs text-white/70">
+              {pct}% • {t("loading.syncing")}
+            </div>
           </div>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -172,10 +179,6 @@ export default function Loading() {
       `}</style>
     </div>
   );
-}
-
-function kindLabel(k: "players" | "clubs" | "brawlers") {
-  return k === "players" ? "Joueurs" : k === "clubs" ? "Clubs" : "Brawlers";
 }
 
 function flagEmoji(cc: string) {
@@ -252,10 +255,10 @@ function Medal({ rank }: { rank: number }) {
     rank === 1
       ? "from-yellow-300 to-amber-500"
       : rank === 2
-      ? "from-zinc-200 to-zinc-400"
-      : rank === 3
-      ? "from-amber-700 to-amber-900"
-      : "from-white to-white/80";
+        ? "from-zinc-200 to-zinc-400"
+        : rank === 3
+          ? "from-amber-700 to-amber-900"
+          : "from-white to-white/80";
 
   return (
     <div className="relative">

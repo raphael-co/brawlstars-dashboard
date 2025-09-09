@@ -1,4 +1,5 @@
 "use client";
+import { useI18n } from "@/components/T";
 
 import React, { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -22,12 +23,8 @@ export default function Loading() {
     return () => clearInterval(t);
   }, []);
 
-  const tips = [
-    "Récupération du profil depuis l’arène…",
-    "Assemblage des brawlers & gears…",
-    "Calcul des winrates récents…",
-    "Polissage des trophées (ça brille ✨)…",
-  ];
+  const { t } = useI18n();
+  const tips = [t("loading.collecting"), t("loading.gearing"), t("loading.wr"), t("loading.polishTrophies")];
   const tip = tips[Math.floor(Date.now() / 1500) % tips.length];
 
   const stars = useMemo(() => {
@@ -90,7 +87,7 @@ export default function Loading() {
               BETA
             </span>
             <span className="text-white/85 text-xs sm:text-sm">
-              Chargement du profil…
+              {t('common.loadingProfile')}
             </span>
           </div>
 

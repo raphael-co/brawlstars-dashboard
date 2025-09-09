@@ -13,6 +13,7 @@ import {
   AreaChart,
   Area,
 } from "recharts";
+import T, { useI18n } from "@/components/T";
 
 type RecentResult = {
   idx: number;
@@ -27,10 +28,10 @@ type RecentDelta = {
   mode: string;
 };
 
-const YELLOW = "#FCD34D"; 
-const AMBER = "#F59E0B";  
+const YELLOW = "#FCD34D";
+const AMBER = "#F59E0B";
 const ORANGE = "#FB923C";
-const BLUE = "#60A5FA";  
+const BLUE = "#60A5FA";
 const GRID = "rgba(255,255,255,0.12)";
 const TEXT = "#FFFFFF";
 
@@ -52,6 +53,8 @@ export default function BrawlerCharts({
   recentDelta: RecentDelta[];
   periodLabel?: string;
 }) {
+  const { t } = useI18n();
+
   const resultData = recentResults.map((r) => ({
     x: r.idx,
     res: r.result === "victory" ? 1 : r.result === "defeat" ? -1 : 0,
@@ -66,18 +69,24 @@ export default function BrawlerCharts({
     mode: d.mode,
   }));
 
-  const sampleLabel =
-    periodLabel ?? `(${recentResults.length} dernières avec ce brawler)`;
+  const sampleLabel: React.ReactNode =
+    periodLabel ?? (
+      <>
+        {" ("}
+        {recentResults.length} <T k="charts.lastWithThisBrawler" />
+        {")"}
+      </>
+    );
 
   return (
     <div className="grid md:grid-cols-2 gap-4">
       <DACard innerClassName="p-4 sm:p-5">
         <div className="space-y-1">
           <div className="font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">
-            Résultats récents {sampleLabel}
+            <T k="charts.recentResults.title" /> {sampleLabel}
           </div>
           <div className="text-xs text-white/80">
-            Chaque barre = une partie (1&nbsp;: victoire • 0&nbsp;: nul • -1&nbsp;: défaite).
+            <T k="charts.recentResults.help" />
           </div>
         </div>
 
@@ -97,8 +106,13 @@ export default function BrawlerCharts({
                 contentStyle={tooltipStyle}
                 formatter={(val: any, _n, p: any) => {
                   const v = Number(val);
-                  const label = v === 1 ? "Victoire" : v === 0 ? "Nul" : "Défaite";
-                  return [label, `Partie #${p?.payload?.x}`];
+                  const label =
+                    v === 1
+                      ? t("battlelog.victory")
+                      : v === 0
+                        ? t("battlelog.draw")
+                        : t("battlelog.defeat");
+                  return [label, `${t("charts.game")} #${p?.payload?.x}`];
                 }}
               />
               <Bar
@@ -116,10 +130,10 @@ export default function BrawlerCharts({
       <DACard innerClassName="p-4 sm:p-5">
         <div className="space-y-1">
           <div className="font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">
-            Variations de trophées {sampleLabel}
+            <T k="charts.trophiesDelta.title" /> {sampleLabel}
           </div>
           <div className="text-xs text-white/80">
-            Courbe 1&nbsp;: Δ trophées par partie • Courbe 2&nbsp;: cumul des Δ.
+            <T k="charts.trophiesDelta.help" />
           </div>
         </div>
 
@@ -143,8 +157,8 @@ export default function BrawlerCharts({
                 contentStyle={tooltipStyle}
                 formatter={(val: any, name: any, p: any) => {
                   const label =
-                    name === "delta" ? "Δ trophées" : "Cumul Δ trophées";
-                  return [val, `${label} — Partie #${p?.payload?.x}`];
+                    name === "delta" ? t("charts.deltaLabel") : t("charts.cumulLabel");
+                  return [val, `${label} — ${t("charts.game")} #${p?.payload?.x}`];
                 }}
               />
               <Area

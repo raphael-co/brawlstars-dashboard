@@ -3,9 +3,29 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
+import T, { useI18n } from "@/components/T";
+
+function hashSeed(input: string): number {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < input.length; i++) {
+    h ^= input.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return h >>> 0;
+}
+function mulberry32(seed: number) {
+  let a = seed >>> 0;
+  return function rand() {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t ^= t + Math.imul(t ^ (t >>> 7), 61 | t);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
 
 export default function Loading() {
   const pathname = usePathname();
+  const { t } = useI18n();
 
   const tagUp = useMemo(() => {
     const m = /\/club\/([^\/?#]+)/.exec(pathname ?? "");
@@ -16,19 +36,24 @@ export default function Loading() {
 
   const [pct, setPct] = useState(14);
   useEffect(() => {
-    const t = setInterval(() => {
+    const tmr = setInterval(() => {
       setPct((p) => (p >= 96 ? 96 : p + Math.max(1, Math.round((100 - p) * 0.055))));
     }, 120);
-    return () => clearInterval(t);
+    return () => clearInterval(tmr);
   }, []);
 
-  const tips = [
-    "Ouverture des portes du club…",
-    "Mise au point des bannières…",
-    "Rassemblement des membres…",
-    "Polissage de l’emblème ✨…",
-  ];
-  const tip = tips[Math.floor(Date.now() / 1400) % tips.length];
+  const tips = useMemo(
+    () => [t("club.tips.0"), t("club.tips.1"), t("club.tips.2"), t("club.tips.3")],
+    [t]
+  );
+  const [tipIdx, setTipIdx] = useState(0);
+  useEffect(() => {
+    const tmr = setInterval(() => setTipIdx((i) => (i + 1) % tips.length), 1400);
+    return () => clearInterval(tmr);
+  }, [tips.length]);
+  const tip = tips[tipIdx];
+
+  const seedKey = useMemo(() => `club:${tagUp}`, [tagUp]);
 
   return (
     <div className="relative mx-auto flex min-h-[70vh] w-full max-w-5xl items-center justify-center p-6">
@@ -36,7 +61,7 @@ export default function Loading() {
         <div className="absolute inset-0 bg-[radial-gradient(900px_500px_at_20%_0%,rgba(56,189,248,0.14),transparent_60%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(900px_500px_at_80%_100%,rgba(251,191,36,0.14),transparent_60%)]" />
         <div className="absolute inset-0 opacity-20 mix-blend-overlay bg-[repeating-linear-gradient(45deg,rgba(255,255,255,0.08)_0,rgba(255,255,255,0.08)_2px,transparent_2px,transparent_10px)]" />
-        <Confetti />
+        <Confetti seedKey={seedKey} />
       </div>
 
       <motion.div
@@ -53,9 +78,11 @@ export default function Loading() {
         <div className="px-6 pt-6 sm:px-8 sm:pt-8">
           <div className="flex items-center gap-2">
             <span className="rounded-md border-2 border-black bg-gradient-to-b from-yellow-300 to-amber-400 px-2 py-0.5 text-[11px] font-black text-black shadow-[0_3px_0_#000]">
-              BETA
+              <T k="common.beta" />
             </span>
-            <span className="text-white/85 text-xs sm:text-sm">Chargement du club…</span>
+            <span className="text-white/85 text-xs sm:text-sm">
+              <T k="club.loading" />
+            </span>
           </div>
         </div>
 
@@ -86,11 +113,15 @@ export default function Loading() {
 
         <div className="px-6 sm:px-8">
           <ProgressGold value={pct} />
-          <div className="mt-1 text-right text-xs text-white/70">{pct}% • synchronisation…</div>
+          <div className="mt-1 text-right text-xs text-white/70">
+            {pct}% • <T k="club.syncing" />
+          </div>
         </div>
 
         <div className="px-6 pb-6 pt-4 sm:px-8 sm:pb-8">
-          <div className="text-white/85 text-sm mb-2">Membres</div>
+          <div className="text-white/85 text-sm mb-2">
+            <T k="club.members" />
+          </div>
           <div className="grid gap-2">
             {Array.from({ length: 6 }).map((_, i) => (
               <MemberRow key={i} delay={i * 0.05} />
@@ -130,14 +161,18 @@ function BackdropScan() {
 }
 
 function Banner({ side, alt = false }: { side: "left" | "right"; alt?: boolean }) {
-  const g = alt
-    ? "from-sky-300 to-blue-500"
-    : "from-yellow-300 to-amber-500";
+  const g = alt ? "from-sky-300 to-blue-500" : "from-yellow-300 to-amber-500";
   const skew = side === "left" ? "-skew-y-1" : "skew-y-1";
   return (
     <div className={`relative h-28 w-20 sm:h-32 sm:w-24 ${skew}`}>
-      <div className={`absolute inset-0 rounded-md border-4 border-black bg-gradient-to-b ${g} shadow-[0_6px_0_#000]`} style={{ animation: "wave 2.1s ease-in-out infinite" }} />
-      <div className="absolute inset-0 rounded-md" style={{ background: "radial-gradient(circle at 70% 30%, rgba(255,255,255,.6), rgba(255,255,255,0) 55%)" }} />
+      <div
+        className={`absolute inset-0 rounded-md border-4 border-black bg-gradient-to-b ${g} shadow-[0_6px_0_#000]`}
+        style={{ animation: "wave 2.1s ease-in-out infinite" }}
+      />
+      <div
+        className="absolute inset-0 rounded-md"
+        style={{ background: "radial-gradient(circle at 70% 30%, rgba(255,255,255,.6), rgba(255,255,255,0) 55%)" }}
+      />
       <div className="absolute bottom-[-10px] left-1/2 h-3 w-2 -translate-x-1/2 rounded-b-md bg-black" />
     </div>
   );
@@ -158,7 +193,7 @@ function Crest({ tagUp }: { tagUp: string }) {
       <div className="relative h-24 w-24 sm:h-28 sm:w-28 rounded-full border-4 border-black bg-gradient-to-b from-fuchsia-400 to-rose-500 shadow-[0_6px_0_#000]" />
       <div className="absolute inset-0 grid place-items-center">
         <span className="rounded-md border-2 border-black bg-yellow-300 px-3 py-1 text-sm font-black text-black shadow-[0_3px_0_#000]">
-          CLUB
+          <T k="club.badge" />
         </span>
       </div>
       <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-md border-2 border-black bg-black/70 px-2 py-0.5 text-[11px] font-black text-white shadow-[0_2px_0_#000]">
@@ -180,7 +215,14 @@ function MemberRow({ delay = 0 }: { delay?: number }) {
         <div className="h-9 w-9 shrink-0 rounded-md border-2 border-black bg-white/10" />
         <div className="flex-1">
           <div className="relative h-3 w-3/5 overflow-hidden rounded-sm bg-white/10">
-            <div className="absolute inset-y-0 -left-full w-1/3" style={{ background: "linear-gradient(75deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%)", animation: "shimmer 2.1s ease-in-out infinite" }} />
+            <div
+              className="absolute inset-y-0 -left-full w-1/3"
+              style={{
+                background:
+                  "linear-gradient(75deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%)",
+                animation: "shimmer 2.1s ease-in-out infinite",
+              }}
+            />
           </div>
           <div className="mt-2 flex gap-2">
             <Pill />
@@ -197,7 +239,14 @@ function MemberRow({ delay = 0 }: { delay?: number }) {
 function Pill({ w = "w-20" }: { w?: string }) {
   return (
     <div className={`relative h-2 ${w} overflow-hidden rounded-full bg-white/10`}>
-      <div className="absolute inset-y-0 -left-full w-1/3" style={{ background: "linear-gradient(75deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0) 100%)", animation: "shimmer 2.3s ease-in-out infinite" }} />
+      <div
+        className="absolute inset-y-0 -left-full w-1/3"
+        style={{
+          background:
+            "linear-gradient(75deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0) 100%)",
+          animation: "shimmer 2.3s ease-in-out infinite",
+        }}
+      />
     </div>
   );
 }
@@ -218,7 +267,8 @@ function ProgressGold({ value }: { value: number }) {
           aria-hidden
           className="pointer-events-none absolute top-0 bottom-0 w-1/3 -translate-x-full rounded-[inherit]"
           style={{
-            background: "linear-gradient(75deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0) 100%)",
+            background:
+              "linear-gradient(75deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0) 100%)",
             animation: "shimmer 2.2s ease-in-out infinite",
             filter: "brightness(1.05)",
           }}
@@ -227,7 +277,8 @@ function ProgressGold({ value }: { value: number }) {
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-[55%] rounded-t-[inherit]"
           style={{
-            background: "linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.15) 60%, rgba(255,255,255,0) 100%)",
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.15) 60%, rgba(255,255,255,0) 100%)",
           }}
         />
       </div>
@@ -242,24 +293,32 @@ function ProgressGold({ value }: { value: number }) {
   );
 }
 
-function Confetti() {
-  const pieces = Array.from({ length: 18 }).map((_, i) => ({
-    left: Math.random() * 100,
-    delay: Math.random() * 2000,
-    dur: 3500 + Math.random() * 2000,
-    size: 6 + Math.random() * 8,
-    color: i % 3 === 0 ? "#FCD34D" : i % 3 === 1 ? "#60A5FA" : "#F0ABFC",
-  }));
+function Confetti({ seedKey }: { seedKey: string }) {
+  const pieces = useMemo(() => {
+    const rnd = mulberry32(hashSeed(seedKey));
+    const count = 18;
+    const arr = Array.from({ length: count }).map((_, i) => {
+      const left = rnd() * 100;
+      const delay = rnd() * 2000;
+      const dur = 3500 + rnd() * 2000;
+      const size = 6 + rnd() * 8;
+      const pick = rnd();
+      const color = pick < 1 / 3 ? "#FCD34D" : pick < 2 / 3 ? "#60A5FA" : "#F0ABFC";
+      return { left, delay, dur, size, color, key: i };
+    });
+    return arr;
+  }, [seedKey]);
+
   return (
     <>
-      {pieces.map((p, i) => (
+      {pieces.map((p) => (
         <span
-          key={i}
+          key={p.key}
           className="pointer-events-none absolute -top-10 rounded-[2px]"
           style={{
             left: `${p.left}%`,
-            width: p.size,
-            height: p.size * 0.6,
+            width: `${p.size}px`,
+            height: `${p.size * 0.6}px`,
             background: p.color,
             transform: "rotate(15deg)",
             animation: `confetti-fall ${p.dur}ms ease-in infinite`,

@@ -1,5 +1,25 @@
+function I18nProvider({
+  locale,
+  dict,
+  children
+}: {
+  locale: Locale;
+  dict: any;
+  children: React.ReactNode;
+}) {
+  return (
+    <div data-locale={locale} data-dict={JSON.stringify(dict)}>
+      {children}
+    </div>
+  );
+}
+
+
+
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { isLocale, type Locale } from "@/lib/i18n/config";
 import type { Metadata } from "next";
-import "./globals.css";
+import "../globals.css";
 import { ThemeProvider } from "next-themes";
 import { Navbar } from "@/components/Navbar";
 import { DecorLayer } from "@/components/Decor";
@@ -9,7 +29,17 @@ export const metadata: Metadata = {
   description: "Stats, complétion et suivi de compte Brawl Stars",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+  params
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+
+  const { locale } = await params;
+  const loc: Locale = isLocale(locale) ? locale : "en";
+  const dict = await getDictionary(loc);
   return (
     <html lang="fr" suppressHydrationWarning>
       <body
@@ -38,7 +68,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   </div>
 
                   <DecorLayer seed="layout-main" stars={6} sparkles={8} />
-                  {children}
+                  <I18nProvider locale={loc} dict={dict}>
+                    {children}
+                  </I18nProvider>
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/30 to-transparent" />
                 </div>
               </div>

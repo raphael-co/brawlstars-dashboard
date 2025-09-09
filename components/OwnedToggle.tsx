@@ -9,13 +9,13 @@ export default function OwnedToggle({ skinId }: { skinId: number }) {
 
   useEffect(() => {
     setMounted(true)
-    try { setOwned(localStorage.getItem(key) === '1') } catch {}
+    try { setOwned(localStorage.getItem(key) === '1') } catch { }
   }, [key])
 
   function toggle() {
     const v = !owned
     setOwned(v)
-    try { localStorage.setItem(key, v ? '1' : '0') } catch {}
+    try { localStorage.setItem(key, v ? '1' : '0') } catch { }
   }
 
   if (!mounted) return <span className="badge">Manquant</span>

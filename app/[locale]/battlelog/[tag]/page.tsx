@@ -1,3 +1,5 @@
+import T, { useI18n } from "@/components/T";
+import { Lnk } from "@/components/Lnk";
 import { getBattleLog, getBrawlerAssets } from '@/lib/brawl'
 import Link from 'next/link'
 import { DACard } from '@/components/DACard'
@@ -113,7 +115,7 @@ function ResultBadge({ result, delta }: { result?: 'victory' | 'defeat' | 'draw'
   const base = 'rounded-md border-2 border-black px-2 py-0.5 text-xs font-extrabold shadow-[0_2px_0_#000]'
   if (result === 'victory') return <span className={`${base} bg-gradient-to-b from-green-300 to-emerald-400 text-black`}>Victoire {typeof delta === 'number' ? `(+${delta})` : ''}</span>
   if (result === 'defeat') return <span className={`${base} bg-gradient-to-b from-rose-300 to-red-400 text-black`}>Défaite {typeof delta === 'number' ? `(${delta})` : ''}</span>
-  return <span className={`${base} bg-gradient-to-b from-zinc-200 to-zinc-400 text-black`}>Égalité</span>
+  return <span className={`${base} bg-gradient-to-b from-zinc-200 to-zinc-400 text-black`}><T k="battlelog.draw" /></span>
 }
 
 function normTag(tag?: string | null) {
@@ -175,12 +177,12 @@ function TeamFaces({
             )}
             <div className="text-xs text-white/90 leading-tight text-center">
               <div className="font-bold">{p?.brawler?.name ?? '—'}</div>
-              <Link
+              <Lnk
                 className="text-white/80"
                 href={`/player/${normTag(p?.tag)}`}
               >
                 {p?.name ?? ''}
-              </Link>
+              </Lnk>
             </div>
           </div>
         )
@@ -227,9 +229,9 @@ export default async function BattlelogPage({
             Période&nbsp;: <span className="font-semibold text-yellow-300">{periodLabel}</span>
           </div>
           <div className="text-sm text-white/90 drop-shadow-[0_2px_0_rgba(0,0,0,0.6)]">
-            <Link className="underline decoration-2 underline-offset-2 hover:opacity-90" href={`/player/${tagUp}`}>
-              Voir le profil
-            </Link>
+            <Lnk className="underline decoration-2 underline-offset-2 hover:opacity-90" href={`/player/${tagUp}`}>
+              <T k="common.seeProfile" />
+            </Lnk>
           </div>
         </div>
       </DACard>

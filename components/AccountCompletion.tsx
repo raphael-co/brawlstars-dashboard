@@ -39,7 +39,7 @@ const gridVariants = {
 export function AccountCompletion({ comp }: AccountCompletionProps) {
   const pct = (a: number, b: number) =>
     `${Math.round((a / Math.max(1, b)) * 100)}%`;
-  
+
   const items = [
     {
       label: "Brawlers",

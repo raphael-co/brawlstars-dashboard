@@ -2,6 +2,7 @@
 import type { Route } from 'next';
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useMemo, useTransition } from 'react'
+import T from '@/components/T';
 
 export default function RankedControls({
     countries,
@@ -30,8 +31,8 @@ export default function RankedControls({
             params.set('brawlerId', next.brawlerId)
         }
         startTransition(() => {
-            const href = `/ranked?${params.toString()}` as Route;
-            router.replace(href);
+            const href = `/ranked?${params.toString()}` as Route
+            router.replace(href)
         })
     }
 
@@ -42,7 +43,9 @@ export default function RankedControls({
     return (
         <div className="grid gap-3 sm:grid-cols-3">
             <div className="space-y-1">
-                <div className="text-xs text-white/70">Pays</div>
+                <div className="text-xs text-white/70">
+                    <T k="rankings.controls.country" />
+                </div>
                 <select
                     value={country}
                     onChange={(e) => set({ country: e.target.value })}
@@ -54,11 +57,12 @@ export default function RankedControls({
                         </option>
                     ))}
                 </select>
-
             </div>
 
             <div className="space-y-1">
-                <div className="text-xs text-white/70">Catégorie</div>
+                <div className="text-xs text-white/70">
+                    <T k="rankings.controls.category" />
+                </div>
                 <div className="grid grid-cols-3 gap-2">
                     {(['players', 'clubs', 'brawlers'] as const).map(k => (
                         <button
@@ -69,14 +73,16 @@ export default function RankedControls({
                                 k === kind ? "bg-gradient-to-b from-yellow-300 to-amber-400 text-black" : "bg-white/80 text-black/80"
                             ].join(' ')}
                         >
-                            {k === 'players' ? 'Joueurs' : k === 'clubs' ? 'Clubs' : 'Brawlers'}
+                            <T k={`rankings.kinds.${k}`} />
                         </button>
                     ))}
                 </div>
             </div>
 
             <div className="space-y-1">
-                <div className="text-xs text-white/70">Brawler</div>
+                <div className="text-xs text-white/70">
+                    <T k="rankings.controls.brawler" />
+                </div>
                 <select
                     disabled={kind !== 'brawlers'}
                     value={brawlerId ?? ''}
@@ -87,13 +93,17 @@ export default function RankedControls({
                     ].join(' ')}
                 >
                     {bOpts.map(b => (
-                        <option key={b.id} value={b.id}>{b.name}</option>
+                        <option key={b.id} value={b.id} className="text-black bg-white">
+                            {b.name}
+                        </option>
                     ))}
                 </select>
             </div>
 
             {isPending && (
-                <div className="col-span-full text-xs text-white/70">Mise à jour…</div>
+                <div className="col-span-full text-xs text-white/70">
+                    <T k="rankings.controls.updating" />
+                </div>
             )}
         </div>
     )

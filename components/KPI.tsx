@@ -1,19 +1,21 @@
 "use client";
 
 import { motion } from "framer-motion";
-import React from "react";
+import type { ReactNode } from "react";
 
 type KPIProps = {
-  label: string;
-  value: string | number;
-  sub?: string;
+  label: ReactNode;
+  value: ReactNode; // accepte string | number | ReactElement (ex: <T />)
+  sub?: ReactNode;
 };
 
 export function KPI({ label, value, sub }: KPIProps) {
+  const valueKey =
+    typeof value === "string" || typeof value === "number" ? String(value) : undefined;
+
   return (
     <motion.div
-      initial={{ y: 12, scale: 0.98, opacity: 0 }}
-      animate={{ y: 0, scale: 1, opacity: 1 }}
+      initial={false}
       whileHover={{ y: -4, rotate: -0.5 }}
       whileTap={{ scale: 0.98, rotate: 0.5 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -33,7 +35,7 @@ export function KPI({ label, value, sub }: KPIProps) {
           <Sparkle className="absolute left-7 top-2 h-3 w-3 text-sky-200" />
           <Sparkle className="absolute right-6 bottom-6 h-2.5 w-2.5 text-fuchsia-200" />
 
-          <motion.div className="flex flex-col gap-1 text-white">
+          <div className="flex flex-col gap-1 text-white">
             <div className="inline-flex items-center gap-2">
               <Badge>★</Badge>
               <div className="text-[11px] font-black uppercase tracking-widest text-yellow-300 drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">
@@ -42,7 +44,7 @@ export function KPI({ label, value, sub }: KPIProps) {
             </div>
 
             <motion.div
-              key={String(value)}
+              key={valueKey}
               initial={{ scale: 0.9, filter: "brightness(0.8)" }}
               animate={{ scale: 1, filter: "brightness(1)" }}
               transition={{ type: "spring", stiffness: 260, damping: 14 }}
@@ -66,7 +68,7 @@ export function KPI({ label, value, sub }: KPIProps) {
                 {sub}
               </div>
             )}
-          </motion.div>
+          </div>
 
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/30 to-transparent" />
         </div>
@@ -75,7 +77,7 @@ export function KPI({ label, value, sub }: KPIProps) {
   );
 }
 
-function Badge({ children }: { children: React.ReactNode }) {
+function Badge({ children }: { children: ReactNode }) {
   return (
     <span className="grid h-5 w-5 place-items-center rounded-md border-2 border-black bg-gradient-to-b from-yellow-300 to-amber-400 text-[10px] font-extrabold text-black shadow-[0_3px_0_#000]">
       {children}
@@ -88,9 +90,7 @@ function Star({ className = "" }: { className?: string }) {
     <motion.svg
       viewBox="0 0 24 24"
       className={className}
-      initial={{ scale: 0, rotate: -30 }}
-      animate={{ scale: 1, rotate: 0 }}
-      transition={{ type: "spring", stiffness: 300, damping: 12 }}
+      initial={false}
       aria-hidden
     >
       <path
@@ -108,9 +108,7 @@ function Sparkle({ className = "" }: { className?: string }) {
     <motion.svg
       viewBox="0 0 24 24"
       className={className}
-      initial={{ scale: 0.6, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.6 }}
+      initial={false}
       aria-hidden
     >
       <path

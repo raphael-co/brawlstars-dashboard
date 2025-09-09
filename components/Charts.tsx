@@ -17,11 +17,12 @@ import {
   LineChart,
   Line,
 } from "recharts";
+import T, { useI18n } from "@/components/T";
 
-const YELLOW = "#FCD34D"; 
-const AMBER = "#F59E0B"; 
-const ORANGE = "#FB923C"; 
-const BLUE = "#60A5FA"; 
+const YELLOW = "#FCD34D";
+const AMBER = "#F59E0B";
+const ORANGE = "#FB923C";
+const BLUE = "#60A5FA";
 const PINK = "#F0ABFC";
 const GRID = "rgba(255,255,255,0.12)";
 const TEXT = "#FFFFFF";
@@ -39,7 +40,7 @@ function ChartDesc({ children }: { children: React.ReactNode }) {
   return (
     <p className="text-[13px] leading-relaxed text-white/85 drop-shadow-[0_2px_0_rgba(0,0,0,0.6)]">
       <span className="inline-flex items-center gap-1 rounded-md border-2 border-black bg-gradient-to-b from-yellow-300/70 to-amber-400/70 px-1.5 py-0.5 text-[10px] font-extrabold text-black shadow-[0_2px_0_#000] mr-2">
-        TIP
+        <T k="charts.tip" />
       </span>
       {children}
     </p>
@@ -50,7 +51,7 @@ function PeriodBadge({ label }: { label?: string }) {
   if (!label) return null;
   return (
     <div className="text-xs text-white/75">
-      Période&nbsp;: <span className="font-semibold text-yellow-300">{label}</span>
+      <T k="common.period" />:&nbsp;<span className="font-semibold text-yellow-300">{label}</span>
     </div>
   );
 }
@@ -66,12 +67,12 @@ export function TrophiesArea({
     <div className="space-y-2">
       <div className="flex items-end justify-between gap-3">
         <div className="mb-1 font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">
-          Progression des trophées
+          <T k="charts.trophiesProgress.title" />
         </div>
         <PeriodBadge label={periodLabel} />
       </div>
       <ChartDesc>
-        Évolution de vos trophées au fil du temps. La zone colorée met en avant la dynamique récente.
+        <T k="charts.trophiesProgress.help" />
       </ChartDesc>
       <div style={{ width: "100%", height: 240 }}>
         <ResponsiveContainer>
@@ -105,12 +106,12 @@ export function WinrateBars({
     <div className="space-y-2">
       <div className="flex items-end justify-between gap-3">
         <div className="mb-1 font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">
-          Winrate par mode
+          <T k="charts.winrateByMode.title" />
         </div>
         <PeriodBadge label={periodLabel} />
       </div>
       <ChartDesc>
-        Pourcentage de victoires par mode sur la période. 100% = toutes les parties gagnées sur ce mode.
+        <T k="charts.winrateByMode.help" />
       </ChartDesc>
       <div style={{ width: "100%", height: 260 }}>
         <ResponsiveContainer>
@@ -144,12 +145,12 @@ export function ModeVolumeBars({
     <div className="space-y-2">
       <div className="flex items-end justify-between gap-3">
         <div className="mb-1 font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">
-          Volume de parties par mode
+          <T k="charts.modeVolume.title" />
         </div>
         <PeriodBadge label={periodLabel} />
       </div>
       <ChartDesc>
-        Répartition du nombre de parties jouées par mode. Utile pour contextualiser vos winrates (taille d’échantillon).
+        <T k="charts.modeVolume.help" />
       </ChartDesc>
       <div style={{ width: "100%", height: 260 }}>
         <ResponsiveContainer>
@@ -170,7 +171,7 @@ export function ResultsPie({
   data,
   periodLabel,
 }: {
-  data: Array<{ name: string; value: number; key: 'victory' | 'defeat' | 'draw' }>;
+  data: Array<{ name: string; value: number; key: "victory" | "defeat" | "draw" }>;
   periodLabel?: string;
 }) {
   const tooltipLabelStyle: React.CSSProperties = { color: "#fff" };
@@ -180,21 +181,17 @@ export function ResultsPie({
     <div className="space-y-2">
       <div className="flex items-end justify-between gap-3">
         <div className="mb-1 font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">
-          Répartition des résultats
+          <T k="charts.resultsPie.title" />
         </div>
         <PeriodBadge label={periodLabel} />
       </div>
       <ChartDesc>
-        Vue d’ensemble de vos victoires, défaites et nuls sur la période affichée.
+        <T k="charts.resultsPie.help" />
       </ChartDesc>
       <div style={{ width: "100%", height: 260 }}>
         <ResponsiveContainer>
           <PieChart>
-            <Tooltip
-              contentStyle={tooltipStyle}
-              labelStyle={tooltipLabelStyle}
-              itemStyle={tooltipItemStyle}
-            />
+            <Tooltip contentStyle={tooltipStyle} labelStyle={tooltipLabelStyle} itemStyle={tooltipItemStyle} />
             <Pie data={data} dataKey="value" nameKey="name" innerRadius={50} outerRadius={80} stroke="#000" strokeWidth={2}>
               {data.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[entry.key]} />
@@ -218,12 +215,12 @@ export function RollingWinrateLine({
     <div className="space-y-2">
       <div className="flex items-end justify-between gap-3">
         <div className="mb-1 font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">
-          Winrate cumulée par partie
+          <T k="charts.rollingWinrate.title" />
         </div>
         <PeriodBadge label={periodLabel} />
       </div>
       <ChartDesc>
-        Tendance de performance : à chaque match, la courbe montre le pourcentage total de victoires jusqu’à cet instant.
+        <T k="charts.rollingWinrate.help" />
       </ChartDesc>
       <div style={{ width: "100%", height: 260 }}>
         <ResponsiveContainer>
@@ -255,21 +252,21 @@ export function DurationHistogram({
     { label: "151-180s", min: 151, max: 180 },
     { label: "180+s", min: 181, max: Infinity },
   ];
-  const counts = bins.map(b => ({
+  const counts = bins.map((b) => ({
     bucket: b.label,
-    count: data.filter(d => d >= b.min && d <= b.max).length,
+    count: data.filter((d) => d >= b.min && d <= b.max).length,
   }));
 
   return (
     <div className="space-y-2">
       <div className="flex items-end justify-between gap-3">
         <div className="mb-1 font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">
-          Durée des parties
+          <T k="charts.duration.title" />
         </div>
         <PeriodBadge label={periodLabel} />
       </div>
       <ChartDesc>
-        Distribution des durées (en secondes). Permet d’identifier des modes ou cartes plus longs/courts.
+        <T k="charts.duration.help" />
       </ChartDesc>
       <div style={{ width: "100%", height: 260 }}>
         <ResponsiveContainer>
@@ -293,16 +290,17 @@ export function HourWinrateBars({
   data: Array<{ hour: number; winrate: number; total: number }>;
   periodLabel?: string;
 }) {
+  const { t } = useI18n();
   return (
     <div className="space-y-2">
       <div className="flex items-end justify-between gap-3">
         <div className="mb-1 font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">
-          Winrate par heure (UTC)
+          <T k="charts.hourWinrate.title" />
         </div>
         <PeriodBadge label={periodLabel} />
       </div>
       <ChartDesc>
-        Taux de victoire moyen selon l’heure (UTC). Pratique pour viser des plages horaires plus favorables.
+        <T k="charts.hourWinrate.help" />
       </ChartDesc>
       <div style={{ width: "100%", height: 260 }}>
         <ResponsiveContainer>
@@ -312,8 +310,8 @@ export function HourWinrateBars({
             <YAxis stroke={TEXT} domain={[0, 100]} />
             <Tooltip
               contentStyle={tooltipStyle}
-              formatter={(val: any) => [`${val}%`, "Winrate"]}
-              labelFormatter={(l: any) => `Heure ${l}:00`}
+              formatter={(val: any) => [`${val}%`, t("charts.winrateLabel")]}
+              labelFormatter={(l: any) => `${t("charts.hour")} ${l}:00`}
             />
             <Bar dataKey="winrate" fill={PINK} stroke="#000" strokeWidth={1.5} radius={[6, 6, 0, 0]} />
           </BarChart>
@@ -334,12 +332,12 @@ export function MapWinrateBars({
     <div className="space-y-2">
       <div className="flex items-end justify-between gap-3">
         <div className="mb-1 font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">
-          Meilleures cartes (par winrate)
+          <T k="charts.mapWinrate.title" />
         </div>
         <PeriodBadge label={periodLabel} />
       </div>
       <ChartDesc>
-        Classement des cartes selon votre pourcentage de victoire. À utiliser pour cibler vos points forts/faibles.
+        <T k="charts.mapWinrate.help" />
       </ChartDesc>
       <div style={{ width: "100%", height: 280 }}>
         <ResponsiveContainer>
@@ -360,17 +358,18 @@ export function TrophyDeltaArea({
   sampleLabel,
   deltaData,
 }: {
-  sampleLabel: string; 
+  sampleLabel: string;
   deltaData: Array<{ x: number; delta: number; cumul: number }>;
 }) {
+  const { t } = useI18n();
   return (
     <div className="space-y-2">
       <div className="space-y-1">
         <div className="font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">
-          Variations de trophées {sampleLabel}
+          <T k="charts.trophiesDelta.title" /> {sampleLabel}
         </div>
         <div className="text-xs text-white/80">
-          Courbe 1&nbsp;: Δ trophées par partie • Courbe 2&nbsp;: cumul des Δ.
+          <T k="charts.trophiesDelta.help" />
         </div>
       </div>
 
@@ -393,26 +392,12 @@ export function TrophyDeltaArea({
             <Tooltip
               contentStyle={tooltipStyle}
               formatter={(val: any, name: any, p: any) => {
-                const label = name === "delta" ? "Δ trophées" : "Cumul Δ trophées";
-                return [val, `${label} — Partie #${p?.payload?.x}`];
+                const label = name === "delta" ? t("charts.deltaLabel") : t("charts.cumulLabel");
+                return [val, `${label} — ${t("charts.game")} #${p?.payload?.x}`];
               }}
             />
-            <Area
-              dataKey="delta"
-              type="monotone"
-              stroke="#60A5FA"
-              fill="url(#gradDelta)"
-              strokeWidth={2.2}
-              dot={false}
-            />
-            <Area
-              dataKey="cumul"
-              type="monotone"
-              stroke="#F59E0B"
-              fill="url(#gradCumul)"
-              strokeWidth={2.2}
-              dot={false}
-            />
+            <Area dataKey="delta" type="monotone" stroke="#60A5FA" fill="url(#gradDelta)" strokeWidth={2.2} dot={false} />
+            <Area dataKey="cumul" type="monotone" stroke="#F59E0B" fill="url(#gradCumul)" strokeWidth={2.2} dot={false} />
           </AreaChart>
         </ResponsiveContainer>
       </div>

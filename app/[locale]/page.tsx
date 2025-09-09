@@ -1,7 +1,11 @@
-import Link from "next/link";
+"use client";
+import T, { useI18n } from "@/components/T";
 import { DACard } from "@/components/DACard";
+import { Lnk } from "@/components/Lnk";
 
 export default function Home() {
+  const { t } = useI18n();
+
   return (
     <div className="space-y-8">
       <section className="relative">
@@ -22,31 +26,34 @@ export default function Home() {
           <div className="space-y-4 text-white">
             <div className="inline-flex items-center gap-2">
               <span className="rounded-md border-2 border-black bg-gradient-to-b from-yellow-300 to-amber-400 px-2 py-0.5 text-[11px] font-black text-black shadow-[0_3px_0_#000]">
-                BETA
+                <T k="common.beta" />
               </span>
               <span className="text-white/85 text-xs sm:text-sm">
-                L’application évolue encore — vos retours sont bienvenus ✨
+                <T k="home.betaNote" />
               </span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl font-extrabold drop-shadow-[0_4px_0_rgba(0,0,0,0.8)]">
-              Brawl Stars Dashboard
+              <T k="common.star" /> {t("home.titleSuffix")}
             </h1>
 
             <p className="text-white/90 max-w-2xl drop-shadow-[0_2px_0_rgba(0,0,0,0.6)]">
-              Entrez votre <span className="align-middle rounded-md border-2 border-black bg-gradient-to-b from-yellow-300 to-amber-400 px-1.5 py-0.5 text-[12px] font-black text-black shadow-[0_2px_0_#000]">tag</span> dans la barre en haut pour explorer vos stats :
-              trophées, brawlers, star powers, gadgets, progression de complétion, battlelog, club et plus.
+              <T k="home.intro.beforeTag" />{" "}
+              <span className="align-middle rounded-md border-2 border-black bg-gradient-to-b from-yellow-300 to-amber-400 px-1.5 py-0.5 text-[12px] font-black text-black shadow-[0_2px_0_#000]">
+                <T k="home.tag" />
+              </span>{" "}
+              <T k="home.intro.afterTag" />
             </p>
 
             <div className="flex flex-wrap items-center gap-2 text-sm text-white/85">
-              <span className="opacity-90">Exemples&nbsp;:</span>
-              <Link href="/player/GGUQJ28Q" className="underline decoration-2 underline-offset-2 hover:opacity-90">
-                Profil joueur
-              </Link>
+              <span className="opacity-90"><T k="home.examples" /></span>
+              <Lnk href="/player/GGUQJ28Q" className="underline decoration-2 underline-offset-2 hover:opacity-90">
+                <T k="player.title" />
+              </Lnk>
               <span className="opacity-40">•</span>
-              <Link href="/battlelog/GGUQJ28Q" className="underline decoration-2 underline-offset-2 hover:opacity-90">
-                Battlelog & analytics
-              </Link>
+              <Lnk href="/battlelog/GGUQJ28Q" className="underline decoration-2 underline-offset-2 hover:opacity-90">
+                <T k="home.battlelogAndAnalytics" />
+              </Lnk>
             </div>
           </div>
         </DACard>
@@ -56,16 +63,16 @@ export default function Home() {
         <div className="lg:col-span-7">
           <DACard innerClassName="p-5 sm:p-6 space-y-3">
             <h2 className="text-white font-extrabold text-xl drop-shadow-[0_3px_0_rgba(0,0,0,0.8)]">
-              Objectifs de l’app
+              <T k="home.goals.title" />
             </h2>
             <ul className="text-white/90 space-y-2 leading-relaxed">
-              <li>• Offrir une vue claire et <b>lisible</b> de votre progression.</li>
-              <li>• Analyser vos matchs récents avec des <b>charts</b> (winrate, durée, heures, cartes).</li>
-              <li>• Suivre la <b>complétion</b> : brawlers, star powers, gadgets, gears, skins.</li>
-              <li>• Centraliser club, comparaisons, et <b>classements</b> (à venir).</li>
+              <li>• <T k="home.goals.item1" /></li>
+              <li>• <T k="home.goals.item2" /></li>
+              <li>• <T k="home.goals.item3" /></li>
+              <li>• <T k="home.goals.item4" /></li>
             </ul>
             <p className="text-white/70 text-sm">
-              Cette version est une <b>BETA</b> : certaines pages/sources de données peuvent changer.
+              <T k="home.goals.betaNote" />
             </p>
           </DACard>
         </div>
@@ -73,20 +80,20 @@ export default function Home() {
         <div className="lg:col-span-5">
           <DACard innerClassName="p-5 sm:p-6 space-y-3">
             <h3 className="text-white font-extrabold text-lg drop-shadow-[0_3px_0_rgba(0,0,0,0.8)]">
-              Comment commencer&nbsp;?
+              <T k="home.how.title" />
             </h3>
             <ol className="text-white/90 space-y-2 list-decimal pl-5">
-              <li>Récupérez votre <b>tag</b> en jeu (ex&nbsp;: <code>#8PQL0J2</code>).</li>
-              <li>Collez-le dans la barre en haut puis validez.</li>
-              <li>Explorez les pages <b>Profil</b>, <b>Battlelog</b>, <b>Brawlers</b>, <b>Club</b>…</li>
+              <li><T k="home.how.step1" /></li>
+              <li><T k="home.how.step2" /></li>
+              <li><T k="home.how.step3" /></li>
             </ol>
             <div className="pt-2">
-              <Link
+              <Lnk
                 href="/player/GGUQJ28Q"
                 className="inline-flex items-center rounded-md border-2 border-black bg-gradient-to-b from-yellow-300 to-amber-400 px-3 py-1.5 text-sm font-extrabold text-black shadow-[0_3px_0_#000] hover:translate-y-[-1px] transition"
               >
-                Voir un profil exemple
-              </Link>
+                <T k="home.how.exampleCta" />
+              </Lnk>
             </div>
           </DACard>
         </div>
@@ -94,44 +101,44 @@ export default function Home() {
 
       <section className="space-y-3">
         <h2 className="text-white font-extrabold text-xl drop-shadow-[0_3px_0_rgba(0,0,0,0.8)]">
-          Ce que vous trouverez ici
+          <T k="home.find.title" />
         </h2>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <DACard innerClassName="p-4 sm:p-5 space-y-2">
-            <h3 className="font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">Profil joueur</h3>
-            <p className="text-white/85 text-sm">KPIs, niveaux, trophées, historique, club, et complétion en un clin d’œil.</p>
-            <Link href="/player/GGUQJ28Q" className="underline decoration-2 underline-offset-2 text-sm">Ouvrir</Link>
+            <h3 className="font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]"><T k="player.title" /></h3>
+            <p className="text-white/85 text-sm"><T k="home.find.profileDesc" /></p>
+            <Lnk href="/player/GGUQJ28Q" className="underline decoration-2 underline-offset-2 text-sm"><T k="common.open" /></Lnk>
           </DACard>
 
           <DACard innerClassName="p-4 sm:p-5 space-y-2">
-            <h3 className="font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">Battlelog & Analytics</h3>
-            <p className="text-white/85 text-sm">Winrate global, par mode & carte, durées, heures de perf, tendances.</p>
-            <Link href="/battlelog/GGUQJ28Q" className="underline decoration-2 underline-offset-2 text-sm">Voir les charts</Link>
+            <h3 className="font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]"><T k="battlelog.title" /></h3>
+            <p className="text-white/85 text-sm"><T k="home.find.battlelogDesc" /></p>
+            <Lnk href="/battlelog/GGUQJ28Q" className="underline decoration-2 underline-offset-2 text-sm"><T k="home.find.viewCharts" /></Lnk>
           </DACard>
 
           <DACard innerClassName="p-4 sm:p-5 space-y-2">
-            <h3 className="font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">Focus Brawler</h3>
-            <p className="text-white/85 text-sm">Stats par brawler, série, deltas de trophées, modes favoris.</p>
-            <span className="text-xs text-white/70">Depuis la page Profil &gt; liste de brawlers</span>
+            <h3 className="font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]"><T k="home.find.brawlerFocusTitle" /></h3>
+            <p className="text-white/85 text-sm"><T k="home.find.brawlerFocusDesc" /></p>
+            <span className="text-xs text-white/70"><T k="home.find.brawlerFocusNote" /></span>
           </DACard>
 
           <DACard innerClassName="p-4 sm:p-5 space-y-2">
-            <h3 className="font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">Skins & Cosmétiques</h3>
-            <p className="text-white/85 text-sm">Liste complète (Brawlify) avec marquage local des skins possédés.</p>
-            <span className="text-xs text-white/70">Non-officiel, données indicatives</span>
+            <h3 className="font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]"><T k="home.find.clubsTitle" /></h3>
+            <p className="text-white/85 text-sm"><T k="home.find.clubsDesc" /></p>
+            <span className="text-xs text-white/70"><T k="home.find.clubsNote" /></span>
           </DACard>
 
           <DACard innerClassName="p-4 sm:p-5 space-y-2">
-            <h3 className="font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">Clubs</h3>
-            <p className="text-white/85 text-sm">Infos club, membres, rôles et trophées requis.</p>
-            <span className="text-xs text-white/70">Accès via Profil &gt; Club</span>
+            <h3 className="font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]"><T k="home.find.rankingsSoonTitle" /></h3>
+            <p className="text-white/85 text-sm"><T k="home.find.rankingsSoonDesc" /></p>
+            <span className="text-xs text-white/70"><T k="home.find.rankingsSoonNote" /></span>
           </DACard>
 
           <DACard innerClassName="p-4 sm:p-5 space-y-2">
-            <h3 className="font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">Classements (bientôt)</h3>
-            <p className="text-white/85 text-sm">Top locaux et mondiaux par pays / catégorie.</p>
-            <span className="text-xs text-white/70">En cours de construction</span>
+            <h3 className="font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]"><T k="home.find.skinsTitle" /></h3>
+            <p className="text-white/85 text-sm"><T k="home.find.skinsDesc" /></p>
+            <span className="text-xs text-white/70"><T k="home.find.skinsNote" /></span>
           </DACard>
         </div>
       </section>
@@ -139,8 +146,7 @@ export default function Home() {
       <section>
         <DACard innerClassName="p-4 sm:p-5">
           <p className="text-xs sm:text-sm text-white/75 leading-relaxed">
-            Projet non-officiel. Données issues de l’API Supercell et de Brawlify quand indiqué. Cette BETA peut comporter des imprécisions
-            ou changements de structure. Merci pour vos retours !
+            <T k="home.disclaimer" />
           </p>
         </DACard>
       </section>

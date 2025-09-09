@@ -36,26 +36,26 @@ function rngFromSeed(seed: string) {
 
 type StarSpec = {
   leftPct: string;
-  topPct: string;  
-  sizePx: string; 
-  rotate: string; 
+  topPct: string;
+  sizePx: string;
+  rotate: string;
   color:
-    | "text-yellow-300"
-    | "text-amber-300"
-    | "text-yellow-200"
-    | "text-amber-200"
-    | "text-amber-400";
+  | "text-yellow-300"
+  | "text-amber-300"
+  | "text-yellow-200"
+  | "text-amber-200"
+  | "text-amber-400";
 };
 type SparkSpec = {
   leftPct: string;
   topPct: string;
   sizePx: string;
   color:
-    | "text-sky-200"
-    | "text-fuchsia-200"
-    | "text-sky-100"
-    | "text-fuchsia-100"
-    | "text-sky-300";
+  | "text-sky-200"
+  | "text-fuchsia-200"
+  | "text-sky-100"
+  | "text-fuchsia-100"
+  | "text-sky-300";
 };
 
 function buildStars(

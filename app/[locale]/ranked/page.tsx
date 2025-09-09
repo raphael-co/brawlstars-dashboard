@@ -1,14 +1,16 @@
 import Link from 'next/link'
-import { Suspense } from 'react'               
+import { Suspense } from 'react'
 import { DACard } from '@/components/DACard'
 import RankedControls from '@/components/RankedControls'
 import { getBrawlers, getPlayer } from '@/lib/brawl'
+import { Lnk } from "@/components/Lnk";
+import T from "@/components/T";
 
-export const dynamic = 'force-dynamic'          
+export const dynamic = 'force-dynamic'
 
-type Search = { country?: string; kind?: 'players'|'clubs'|'brawlers'; brawlerId?: string }
+type Search = { country?: string; kind?: 'players' | 'clubs' | 'brawlers'; brawlerId?: string }
 
-async function fetchRankings(country: string, kind: 'players'|'clubs'|'brawlers', brawlerId?: string) {
+async function fetchRankings(country: string, kind: 'players' | 'clubs' | 'brawlers', brawlerId?: string) {
   const path =
     kind === 'brawlers' && brawlerId
       ? `/api/rankings/${country}/brawlers/${encodeURIComponent(brawlerId)}`
@@ -57,7 +59,7 @@ export default async function RankedPage({
   const sp = await searchParams
 
   const country = (sp?.country ?? 'global').toLowerCase()
-  const kind    = (sp?.kind ?? 'players') as 'players'|'clubs'|'brawlers'
+  const kind = (sp?.kind ?? 'players') as 'players' | 'clubs' | 'brawlers'
 
   const brawlers = await getBrawlers().then(r => r?.items ?? []).catch(() => [])
   const defaultBrawlerId = (brawlers[0]?.id ?? 16000000).toString()
@@ -96,17 +98,25 @@ export default async function RankedPage({
   }
 
   const currentBrawler = brawlers.find((b: any) => String(b.id) === String(brawlerId))
-  const title =
-    kind === 'players'  ? 'Top joueurs'
-  : kind === 'clubs'    ? 'Top clubs'
-  :                      `Top joueurs — ${currentBrawler?.name ?? 'Brawler'}`
-  const scoreLabel = kind === 'clubs' ? 'Points' : 'Trophées'
+
+  // Titres i18n (ReactNode)
+  const titleNode =
+    kind === 'players' ? <T k="rankings.topPlayers" />
+      : kind === 'clubs' ? <T k="rankings.topClubs" />
+        : (<>{/* Top players — {name} */}
+          <T k="rankings.topPlayersForBrawlerPrefix" />{' '}
+          {currentBrawler?.name ?? <T k="brawler.unknown" />}
+        </>)
+
+  const scoreLabelNode = kind === 'clubs'
+    ? <T k="rankings.labels.points" />
+    : <T k="rankings.labels.trophies" />
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center gap-3">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white drop-shadow-[0_3px_0_rgba(0,0,0,0.8)]">
-          Classements
+          <T k="rankings.title" />
         </h1>
         <span className="inline-flex items-center gap-2 rounded-md border-2 border-black bg-white/10 px-2 py-1 text-xs font-semibold text-white/90 shadow-[0_2px_0_#000]">
           <span className="text-base leading-none">{flagEmoji(country)}</span>
@@ -114,12 +124,12 @@ export default async function RankedPage({
         </span>
         <span className="inline-flex items-center gap-2 rounded-md border-2 border-black bg-white/10 px-2 py-1 text-xs font-semibold text-white/90 shadow-[0_2px_0_#000]">
           <span className="uppercase tracking-wide">
-            {kind === 'players' ? 'Joueurs' : kind === 'clubs' ? 'Clubs' : 'Brawlers'}
+            <T k={`rankings.kinds.${kind}`} />
           </span>
         </span>
         {kind === 'brawlers' && (
           <span className="inline-flex items-center gap-2 rounded-md border-2 border-black bg-gradient-to-b from-yellow-300 to-amber-400 px-2 py-1 text-xs font-black text-black shadow-[0_2px_0_#000]">
-            {currentBrawler?.name ?? 'Brawler'}
+            {currentBrawler?.name ?? <T k="brawler.unknown" />}
           </span>
         )}
       </div>
@@ -127,7 +137,7 @@ export default async function RankedPage({
       <DACard innerClassName="p-4 sm:p-5" animated={false}>
         <Suspense fallback={<ControlsFallback />}>
           <RankedControls
-            countries={['global','fr','us','de','gb','es','it','br','in','jp','kr']}
+            countries={['global', 'fr', 'us', 'de', 'gb', 'es', 'it', 'br', 'in', 'jp', 'kr']}
             country={country}
             kind={kind}
             brawlers={brawlers.map((b: any) => ({ id: String(b.id), name: b.name }))}
@@ -138,8 +148,10 @@ export default async function RankedPage({
 
       <DACard innerClassName="p-4 sm:p-5 space-y-4" animated={false}>
         <div className="flex items-center justify-between">
-          <div className="text-white font-extrabold">{title}</div>
-          <div className="text-xs text-white/75">{items.length} entrées</div>
+          <div className="text-white font-extrabold">{titleNode}</div>
+          <div className="text-xs text-white/75">
+            {items.length} <T k="rankings.entries" />
+          </div>
         </div>
 
         <div role="list" className="grid gap-3">
@@ -156,9 +168,9 @@ export default async function RankedPage({
 
             const medalCls =
               rank === 1 ? "from-yellow-300 to-amber-500"
-            : rank === 2 ? "from-zinc-200 to-zinc-400"
-            : rank === 3 ? "from-amber-700 to-amber-900"
-            : "from-white to-white/80"
+                : rank === 2 ? "from-zinc-200 to-zinc-400"
+                  : rank === 3 ? "from-amber-700 to-amber-900"
+                    : "from-white to-white/80"
 
             const Content = (
               <article
@@ -169,10 +181,10 @@ export default async function RankedPage({
                 role="listitem"
               >
                 <div className={[
-                    "grid h-10 w-10 place-items-center rounded-lg border-2 border-black",
-                    "bg-gradient-to-b font-black text-black shadow-[0_3px_0_#000]",
-                    rank <= 3 ? `bg-gradient-to-b ${medalCls}` : "bg-white"
-                  ].join(" ")}
+                  "grid h-10 w-10 place-items-center rounded-lg border-2 border-black",
+                  "bg-gradient-to-b font-black text-black shadow-[0_3px_0_#000]",
+                  rank <= 3 ? `bg-gradient-to-b ${medalCls}` : "bg-white"
+                ].join(" ")}
                 >
                   {rank}
                 </div>
@@ -180,7 +192,7 @@ export default async function RankedPage({
                 <div className="min-w-0">
                   <div className="truncate font-extrabold text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">{name}</div>
                   <div className="mt-0.5 flex items-center gap-2 text-xs text-white/70">
-                    <span className="opacity-90">{scoreLabel} :</span>
+                    <span className="opacity-90">{scoreLabelNode} :</span>
                     <span className="text-white/90 font-semibold">{fmt(score)}</span>
                     <span className="opacity-40">•</span>
                     <span className="uppercase">{country}</span>
@@ -195,10 +207,10 @@ export default async function RankedPage({
 
                 <div className="text-right">
                   <div className="text-white text-lg font-extrabold leading-none">{fmt(score)}</div>
-                  <div className="text-[11px] text-white/70">{scoreLabel}</div>
+                  <div className="text-[11px] text-white/70">{scoreLabelNode}</div>
                   {href && (
                     <div className="mt-1 text-[11px] text-white/80 underline decoration-2 underline-offset-2 opacity-0 group-hover:opacity-100 transition">
-                      Voir la fiche
+                      <T k="rankings.view" />
                     </div>
                   )}
                 </div>
@@ -206,9 +218,9 @@ export default async function RankedPage({
             )
 
             return href ? (
-              <Link key={`${tag || name}-${i}`} href={href as any} className="block">
+              <Lnk key={`${tag || name}-${i}`} href={href as any} className="block">
                 {Content}
-              </Link>
+              </Lnk>
             ) : (
               <div key={`${tag || name}-${i}`}>{Content}</div>
             )
@@ -216,7 +228,7 @@ export default async function RankedPage({
 
           {!items.length && (
             <div className="col-span-full rounded-xl border-2 border-black bg-white/5 p-4 text-white/80 shadow-[0_3px_0_#000]">
-              Aucun résultat pour ce filtre.
+              <T k="rankings.noResults" />
             </div>
           )}
         </div>

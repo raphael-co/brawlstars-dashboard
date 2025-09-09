@@ -1,5 +1,5 @@
 
-export function ErrorState({ title='Erreur', message }: { title?: string; message?: string }) {
+export function ErrorState({ title = 'Erreur', message }: { title?: string; message?: string }) {
   return (
     <div className="card">
       <h3 className="mb-2">{title}</h3>

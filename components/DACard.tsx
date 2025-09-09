@@ -33,22 +33,22 @@ export function DACard({
 }: DACardProps) {
   const rootMotionProps = animated
     ? {
-        initial: "hidden",
-        whileInView: "show",
-        viewport: { once, amount: 0.2 },
-        variants,
-        transition: { delay: delay ?? 0 },
-        whileHover: { y: -4, rotate: -0.5 },
-        whileTap: { scale: 0.99, rotate: 0.25 },
-      }
+      initial: "hidden",
+      whileInView: "show",
+      viewport: { once, amount: 0.2 },
+      variants,
+      transition: { delay: delay ?? 0 },
+      whileHover: { y: -4, rotate: -0.5 },
+      whileTap: { scale: 0.99, rotate: 0.25 },
+    }
     : {};
 
   const glowMotionProps = animated
     ? {
-        initial: { opacity: 0.7 },
-        animate: { opacity: [0.5, 0.82, 0.5] },
-        transition: { duration: 3.2, repeat: Infinity, ease: "easeInOut" },
-      }
+      initial: { opacity: 0.7 },
+      animate: { opacity: [0.5, 0.82, 0.5] },
+      transition: { duration: 3.2, repeat: Infinity, ease: "easeInOut" },
+    }
     : {};
 
   return (
