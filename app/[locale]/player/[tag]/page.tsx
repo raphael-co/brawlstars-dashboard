@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { getPlayer, getBrawlers, getCosmetics, getBrawlerAssets, isHttpError, HttpError } from "@/lib/brawl";
 import { computeCompletion } from "@/lib/completion";
 import { KPI } from "@/components/KPI";

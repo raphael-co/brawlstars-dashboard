@@ -19,7 +19,6 @@ function I18nProvider({
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { isLocale, type Locale } from "@/lib/i18n/config";
 import type { Metadata } from "next";
-import "../globals.css";
 import { ThemeProvider } from "next-themes";
 import { Navbar } from "@/components/Navbar";
 import { DecorLayer } from "@/components/Decor";
@@ -41,18 +40,7 @@ export default async function RootLayout({
   const loc: Locale = isLocale(locale) ? locale : "en";
   const dict = await getDictionary(loc);
   return (
-    <html lang="fr" suppressHydrationWarning>
-      <body
-        className={[
-          "min-h-screen",
-          "bg-[#0d0f17]",
-          "relative",
-          "text-white",
-        ].join(" ")}
-      >
 
-        <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(800px_300px_at_50%_0%,rgba(255,255,255,0.06),transparent_60%)]" />
-        <div className="pointer-events-none fixed inset-0 opacity-[0.07] mix-blend-screen bg-[repeating-linear-gradient(135deg,#ffffff_0,#ffffff_2px,transparent_2px,transparent_10px)]" />
 
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="relative z-10 flex min-h-screen flex-col">
@@ -85,7 +73,5 @@ export default async function RootLayout({
 
           </div>
         </ThemeProvider>
-      </body>
-    </html>
   );
 }

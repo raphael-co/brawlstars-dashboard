@@ -302,6 +302,12 @@
     "entries": "entrées",
     "view": "Voir la fiche",
     "noResults": "Aucun résultat pour ce filtre.",
+    "topBrawlers": "Top brawlers",
+    "quick": {
+      "playersSub": "Global & par pays",
+      "clubsSub": "Classement des clubs",
+      "brawlersSub": "Par personnage"
+    },
     "controls": {
       "country": "Pays",
       "category": "Catégorie",
@@ -323,5 +329,14 @@
       "2": "Ajustement des paillettes ✨…",
       "3": "Préparation des fiches joueurs…"
     }
+  },
+  "notFound": {
+    "lostLead": "Tu t’es perdu… on te ramène 💫",
+    "route": "Route :",
+    "title": "Page introuvable",
+    "subtitle": "Cette arène n’existe pas (ou plus). Essaie une autre destination ci-dessous.",
+    "recalibrating": "recalibrage du compas…",
+    "backHome": "Retour à l’accueil",
+    "viewRankings": "Voir les classements"
   }
 }

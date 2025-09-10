@@ -296,12 +296,18 @@
   },
   "rankings": {
     "title": "Rankings",
+    "topBrawlers": "Top brawlers",
     "topPlayers": "Top players",
     "topClubs": "Top clubs",
     "topPlayersForBrawlerPrefix": "Top players —",
     "entries": "entries",
     "view": "View card",
     "noResults": "No results for this filter.",
+    "quick": {
+      "playersSub": "Global & by country",
+      "clubsSub": "Club leaderboard",
+      "brawlersSub": "By character"
+    },
     "controls": {
       "country": "Country",
       "category": "Category",
@@ -323,5 +329,14 @@
       "2": "Adjusting the glitter ✨…",
       "3": "Preparing player cards…"
     }
+  },
+  "notFound": {
+    "lostLead": "You got lost… we'll guide you back 💫",
+    "route": "Path:",
+    "title": "Page not found",
+    "subtitle": "This arena doesn’t exist (anymore). Try another destination below.",
+    "recalibrating": "recalibrating the compass…",
+    "backHome": "Back to home",
+    "viewRankings": "See rankings"
   }
 }

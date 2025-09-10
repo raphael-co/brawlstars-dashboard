@@ -1,6 +1,9 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import en from "@/dictionaries/en.json";
+import fr from "@/dictionaries/fr.json";
 
 type Dict = Record<string, any>;
 
@@ -21,13 +24,16 @@ function getByPath(dict: Dict, path: string): string {
 }
 
 export function useI18n() {
-  const [state, setState] = useState<{ locale: string; dict: Dict }>({ locale: "en", dict: {} });
-  useEffect(() => {
-    setState(safeReadDict());
-  }, []);
+  const pathname = usePathname() || "/";
+  const firstSeg = pathname.split("/").filter(Boolean)[0] ?? "";
+  const locale = firstSeg === "fr" || firstSeg === "en" ? firstSeg : "en";
+  const dict: Dict = locale === "fr" ? (fr as any) : (en as any);
 
-  const t = useMemo(() => (path: string) => getByPath(state.dict, path), [state.dict]);
-  return { t, locale: state.locale };
+  const t = useMemo(
+    () => (path: string) => getByPath(dict, path) ?? path,
+    [dict]
+  );
+  return { t, locale };
 }
 
 export default function T({ k }: { k: string }) {

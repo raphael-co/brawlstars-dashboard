@@ -99,11 +99,10 @@ export default async function RankedPage({
 
   const currentBrawler = brawlers.find((b: any) => String(b.id) === String(brawlerId))
 
-  // Titres i18n (ReactNode)
   const titleNode =
     kind === 'players' ? <T k="rankings.topPlayers" />
       : kind === 'clubs' ? <T k="rankings.topClubs" />
-        : (<>{/* Top players — {name} */}
+        : (<>
           <T k="rankings.topPlayersForBrawlerPrefix" />{' '}
           {currentBrawler?.name ?? <T k="brawler.unknown" />}
         </>)

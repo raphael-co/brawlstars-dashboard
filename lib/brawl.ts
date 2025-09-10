@@ -34,6 +34,19 @@ export type Brawler = {
   gadgets: Array<{ id: number; name: string }>;
 };
 
+
+export type Skin = {
+  id: number;
+  name: string;
+  imageUrl: string | null;
+  imageUrl2?: string | null;
+  rarity: string | null;
+  limited: boolean;
+  brawler: {
+    id: number;
+  };
+};
+
 export type BattleLog = { items: Array<any> };
 
 function normalizeTag(tagOrName: string) {
@@ -55,7 +68,7 @@ async function getBaseUrl(): Promise<string> {
       cachedBase = `${proto}://${host}`;
       return cachedBase;
     }
-  } catch {}
+  } catch { }
 
   const envUrl =
     process.env.NEXT_PUBLIC_BASE_URL ||
@@ -65,7 +78,6 @@ async function getBaseUrl(): Promise<string> {
   return cachedBase;
 }
 
-/** Erreur HTTP structurée pour nos fetchs internes */
 export class HttpError extends Error {
   status: number;
   code?: string | number;
@@ -96,7 +108,7 @@ async function doFetch<T = any>(path: string, init?: NextishInit, opts?: FetchOp
     if (res.status === 404 && opts?.allow404) {
       try {
         await (ct.includes("application/json") ? res.json() : res.text());
-      } catch {}
+      } catch { }
       return null as unknown as T;
     }
 
@@ -182,6 +194,35 @@ export async function getCosmetics() {
   }
 }
 
+export async function getBrawlerSkinsViaProxy(
+  id: number
+): Promise<Array<{ id: number; name: string; imageUrl: string | null; rarity: string | null; limited: boolean }>> {
+  try {
+    const data = await doFetch<{ items?: any[] }>(`/api/brawlers/${id}/skins`, {
+      cache: "force-cache",
+      next: { revalidate: 86400 },
+    });
+
+    console.log(data);
+    
+    const items = data?.items ?? [];
+    const result = items.map((s: any) => ({
+      id: Number(s.id),
+      name: String(s.name),
+      imageUrl: s.imageUrl || s.imageUrl2 || null,
+      rarity: s.rarity ?? null,
+      limited: Boolean(s.limited),
+    }));
+
+    console.log(`[getBrawlerSkinsViaProxy] Skins for brawler ${id}:`, result);
+    return result;
+  } catch (err) {
+    console.error(`[getBrawlerSkinsViaProxy] Error fetching skins for brawler ${id}:`, err);
+    return [];
+  }
+}
+
+
 export async function getBrawlerAssets() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/brawlers/brawler-assets`, {
     cache: "force-cache",
@@ -191,4 +232,19 @@ export async function getBrawlerAssets() {
   return res.json() as Promise<{
     items: Array<{ id: number; name: string; imageUrl?: string | null; imageUrl2?: string | null }>;
   }>;
+}
+
+export async function getBrawlerSkinsById(brawlerId: number): Promise<Omit<Skin, "brawler">[]> {
+  const raw = await getCosmetics(); // existe déjà chez toi
+  const items: Skin[] = Array.isArray(raw) ? raw : raw?.items ?? [];
+
+  return items
+    .filter((s) => Number(s?.brawler?.id) === Number(brawlerId))
+    .map((s) => ({
+      id: Number(s.id),
+      name: String(s.name),
+      imageUrl: s.imageUrl || s.imageUrl2 || null,
+      rarity: s.rarity ? String(s.rarity) : null,
+      limited: Boolean(s.limited),
+    }));
 }

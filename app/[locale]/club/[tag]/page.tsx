@@ -1,4 +1,3 @@
-/* app/[locale]/club/[tag]/page.tsx */
 import { getClub } from "@/lib/brawl";
 import { DACard } from "@/components/DACard";
 import { KPI } from "@/components/KPI";

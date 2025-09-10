@@ -1,9 +1,10 @@
-import { getPlayer, getBrawlers, getBattleLog, getBrawlerAssets } from "@/lib/brawl";
+import { getPlayer, getBrawlers, getBattleLog, getBrawlerAssets, getBrawlerSkinsViaProxy } from "@/lib/brawl";
 import BrawlerCharts from "@/components/BrawlerCharts";
 import { DACard } from "@/components/DACard";
 import { Progress } from "@/components/Progress";
 import T from "@/components/T";
 import { Lnk } from "@/components/Lnk";
+import { Key, ReactElement, JSXElementConstructor, ReactNode, AwaitedReactNode, ReactPortal } from "react";
 
 type PlayerBrawler = {
   id: number;
@@ -18,6 +19,14 @@ type PlayerBrawler = {
   }>;
   gadgets: Array<{ id: number; name: string }>;
   gears?: Array<{ id: number; name: string }>;
+};
+
+type SkinLite = {
+  id: number;
+  name: string;
+  imageUrl: string | null;
+  rarity: string | null;
+  limited: boolean;
 };
 
 function diffById<T extends { name: any; id: number }>(owned: T[] | undefined, all: T[] | undefined) {
@@ -145,6 +154,7 @@ export default async function PlayerBrawlerPage({
   const { tag, id } = await params;
   const tagUp = tag.toUpperCase();
   const brawlerId = Number(id);
+  const skins = await getBrawlerSkinsViaProxy(brawlerId);
 
   const [player, brawlersData, battlelog, assets] = await Promise.all([
     getPlayer(tagUp),
@@ -371,6 +381,44 @@ export default async function PlayerBrawlerPage({
       </section>
 
       <BrawlerCharts recentResults={adv.recentResults} recentDelta={adv.recentDelta} />
+
+      {skins.length ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          {(skins as SkinLite[]).map((sk) => (
+            <div key={sk.id} className="rounded-xl border-2 border-black bg-white/5 p-2">
+              {sk.imageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={sk.imageUrl}
+                  alt={sk.name}
+                  className="w-full aspect-square rounded-lg border-2 border-black object-cover"
+                  loading="lazy"
+                />
+              ) : (
+                <div className="aspect-square rounded-lg border-2 border-black bg-white/10" />
+              )}
+
+              <div className="mt-2 flex items-center justify-between gap-2">
+                <div className="text-xs text-white/90 font-semibold truncate">{sk.name}</div>
+                <div className="flex items-center gap-1">
+                  {sk.rarity && (
+                    <span className="rounded-md border-2 border-black bg-gradient-to-b from-zinc-200 to-zinc-400 px-1.5 py-0.5 text-[10px] font-black text-black shadow-[0_2px_0_#000]">
+                      {sk.rarity}
+                    </span>
+                  )}
+                  {sk.limited && (
+                    <span className="rounded-md border-2 border-black bg-gradient-to-b from-yellow-300 to-amber-400 px-1.5 py-0.5 text-[10px] font-black text-black shadow-[0_2px_0_#000]">
+                      Limited
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-sm text-white/70">Aucun skin trouvé pour ce brawler.</div>
+      )}
     </div>
   );
 }
