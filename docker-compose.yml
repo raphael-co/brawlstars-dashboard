@@ -1,0 +1,16 @@
+services:
+  web:
+    container_name: brawlstars-dashboard
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:3001:3001"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+      - HOSTNAME=0.0.0.0
+      - PORT=3001
+    env_file:
+      - .env
